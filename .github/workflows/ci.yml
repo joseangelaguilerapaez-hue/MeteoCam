@@ -28,6 +28,9 @@ jobs:
       - name: Instalar MeteoCam sin dependencias gráficas
         run: python -m pip install -e . --no-deps
 
+      - name: Ejecutar pruebas
+        run: python -m pytest
+
       - name: Comprobar paquete MeteoCam
         run: |
           python -c "import meteocam; print('MeteoCam:', meteocam.__version__)"
