@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Pruebas Python
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Mostrar versión de Python
+        run: python --version
+
+      - name: Comprobar entorno Python
+        run: |
+          python -c "import sys; print('Python executable:', sys.executable)"
+          python -c "print('MeteoCam CI preparado correctamente')"
+
+# Fin archivo: .github/workflows/ci.yml
