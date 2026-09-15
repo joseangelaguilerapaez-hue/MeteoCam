@@ -21,9 +21,15 @@ jobs:
       - name: Mostrar versión de Python
         run: python --version
 
-      - name: Comprobar entorno Python
+      - name: Actualizar herramientas de instalación
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      - name: Instalar MeteoCam y dependencias de desarrollo
+        run: python -m pip install -e ".[dev]"
+
+      - name: Comprobar PySide6
         run: |
-          python -c "import sys; print('Python executable:', sys.executable)"
+          python -c "import PySide6; print('PySide6:', PySide6.__version__)"
           python -c "print('MeteoCam CI preparado correctamente')"
 
 # Fin archivo: .github/workflows/ci.yml
