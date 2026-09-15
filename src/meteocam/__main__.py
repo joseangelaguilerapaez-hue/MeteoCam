@@ -1,12 +1,23 @@
 """Punto de entrada ejecutable de MeteoCam."""
 
-from meteocam import __version__
+import sys
+
+from PySide6.QtWidgets import QApplication
+
+from meteocam.main_window import MainWindow
 
 
 def main() -> int:
-    """Ejecutar MeteoCam."""
-    print(f"MeteoCam {__version__}")
-    return 0
+    """Iniciar la aplicación de escritorio MeteoCam."""
+    app = QApplication(sys.argv)
+
+    app.setApplicationName("MeteoCam")
+    app.setOrganizationName("MeteoArchidona")
+
+    window = MainWindow()
+    window.show()
+
+    return app.exec()
 
 
 if __name__ == "__main__":
