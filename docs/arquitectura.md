@@ -1,12 +1,12 @@
-MeteoCam — Arquitectura y hoja de ruta
+# MeteoCam — Arquitectura y hoja de ruta
 
-1. Identificación del proyecto
+## 1. Identificación del proyecto
 
-Nombre del repositorio: MeteoCam
-Nombre provisional de la aplicación: MeteoArchidona Camera Agent
-Nombre corto: MeteoCam
-Proyecto: MeteoArchidona
-Lenguaje principal: Python
+Nombre del repositorio: MeteoCam  
+Nombre provisional de la aplicación: MeteoArchidona Camera Agent  
+Nombre corto: MeteoCam  
+Proyecto: MeteoArchidona  
+Lenguaje principal: Python  
 Interfaz gráfica prevista: PySide6 / Qt
 
 MeteoCam es el software de escritorio encargado de gestionar, monitorizar,
@@ -57,7 +57,7 @@ Esta separación permitirá trabajar tanto con cámaras convencionales de una
 
 ---
 
-2. Objetivo general
+## 2. Objetivo general
 
 El objetivo inicial de MeteoCam es conseguir una experiencia de uso lo más
 próxima posible a:
@@ -88,7 +88,7 @@ estación.
 
 ---
 
-3. Alcance de la primera fase
+## 3. Alcance de la primera fase
 
 La primera fase debe proporcionar una aplicación de escritorio funcional y una
 arquitectura preparada para trabajar posteriormente con la cámara real.
@@ -142,19 +142,19 @@ vistas funcionales publicadas por la infraestructura central.
 
 ---
 
-4. Primera instalación física
+## 4. Primera instalación física
 
-4.1 Estación piloto
+### 4.1 Estación piloto
 
-Estación: Los Llanos
-Localidad: Villanueva del Trabuco
+Estación: Los Llanos  
+Localidad: Villanueva del Trabuco  
 Proyecto: MeteoArchidona
 
 La primera instalación se realizará en Los Llanos.
 
 El Silo será una instalación posterior si el piloto funciona correctamente.
 
-4.2 Cámara candidata preferente
+### 4.2 Cámara candidata preferente
 
 La cámara candidata preferente es:
 
@@ -163,7 +163,7 @@ Reolink OMVI 3i PoE
 La OMVI 3i PoE constituye conceptualmente un único dispositivo físico que
 integra dos subsistemas visuales principales.
 
-Cámara superior panorámica
+#### Cámara superior panorámica
 
 Características oficiales relevantes:
 
@@ -180,7 +180,7 @@ Características oficiales relevantes:
 Su función meteorológica prevista será proporcionar una visión general y
 permanente del cielo visible desde la estación.
 
-Cámara inferior PT
+#### Cámara inferior PT
 
 Características oficiales relevantes:
 
@@ -198,7 +198,7 @@ Características oficiales relevantes:
 Su función meteorológica prevista será permitir observación dirigida hacia
 sectores concretos del horizonte mediante posiciones autorizadas.
 
-Capacidades adicionales conocidas
+#### Capacidades adicionales conocidas
 
 La documentación oficial de la OMVI 3i PoE indica actualmente, entre otras
 capacidades:
@@ -242,7 +242,7 @@ modelo.
 La detección real de capacidades deberá formar parte de la integración con el
 hardware.
 
-4.3 Alimentación y red de la OMVI 3i PoE
+### 4.3 Alimentación y red de la OMVI 3i PoE
 
 La OMVI 3i PoE utiliza:
 
@@ -260,7 +260,7 @@ compatibilidad real con IEEE 802.3at y potencia suficiente por puerto.
 No deberá seleccionarse un switch únicamente porque se anuncie genéricamente
 como "PoE".
 
-4.4 Alternativa TrackMix
+### 4.4 Alternativa TrackMix
 
 La Reolink TrackMix PoE permanece como alternativa válida.
 
@@ -284,7 +284,7 @@ Esto permitirá que MeteoCam pueda trabajar en el futuro con:
 - cámaras de una sola lente;
 - dispositivos multicanal.
 
-4.5 Red física
+### 4.5 Red física
 
 La instalación prevista es:
 
@@ -327,7 +327,7 @@ El mini-PC será el elemento inteligente de gestión y procesamiento.
 
 ---
 
-5. Arquitectura de red básica
+## 5. Arquitectura de red básica
 
 La OMVI, TrackMix y cámaras equivalentes no son webcams USB.
 
@@ -372,7 +372,7 @@ Las credenciales nunca estarán escritas directamente en el código fuente.
 
 ---
 
-6. Arquitectura lógica
+## 6. Arquitectura lógica
 
 La interfaz gráfica no debe depender directamente de Reolink, RTSP, ONVIF ni
 ningún fabricante concreto.
@@ -461,37 +461,37 @@ implemente esa fase.
 
 ---
 
-7. Entidades estación, dispositivo, vista y stream
+## 7. Entidades estación, dispositivo, vista y stream
 
 MeteoCam debe estar preparada desde el principio para múltiples estaciones,
 múltiples dispositivos y múltiples vistas por dispositivo.
 
 No se debe identificar un dispositivo únicamente por su IP.
 
-7.1 Estación
+### 7.1 Estación
 
 Ejemplo:
 
-Nombre: Los Llanos
+Nombre: Los Llanos  
 Localidad: Villanueva del Trabuco
 
-7.2 Dispositivo físico de cámara
+### 7.2 Dispositivo físico de cámara
 
 Ejemplo:
 
-Nombre: OMVI principal
-Estación: Los Llanos
-Fabricante: Reolink
-Modelo: OMVI 3i PoE
-IP: 192.168.x.x
-Usuario: ...
+Nombre: OMVI principal  
+Estación: Los Llanos  
+Fabricante: Reolink  
+Modelo: OMVI 3i PoE  
+IP: 192.168.x.x  
+Usuario: ...  
 Contraseña: ...
 
 Un dispositivo representa el hardware físico conectado a la red.
 
 Una estación podrá disponer de uno o varios dispositivos físicos.
 
-7.3 Vista o canal
+### 7.3 Vista o canal
 
 Una vista representa un subsistema visual que puede proporcionar imágenes o
 vídeo de manera diferenciada.
@@ -518,7 +518,7 @@ Vista 1:
 
 El modelo no impondrá que todos los dispositivos tengan dos vistas.
 
-7.4 Stream
+### 7.4 Stream
 
 Cada vista podrá proporcionar uno o varios streams.
 
@@ -542,7 +542,7 @@ hasta comprobar el hardware real.
 El adaptador Reolink será responsable de traducir los identificadores lógicos
 de MeteoCam a los identificadores físicos utilizados por la cámara.
 
-7.5 Identificación central futura
+### 7.5 Identificación central futura
 
 Además de la identificación local, un dispositivo y sus vistas podrán disponer
 posteriormente de identificadores centrales que los relacionen con las
@@ -551,7 +551,7 @@ MeteoArchidona.
 
 ---
 
-8. Configuración local
+## 8. Configuración local
 
 En la primera fase no se utilizará PostgreSQL para almacenar la configuración
 privada de MeteoCam.
@@ -577,7 +577,7 @@ Nunca deberán aparecer contraseñas en:
 
 Debe distinguirse claramente entre:
 
-Configuración privada local
+### Configuración privada local
 
 Información necesaria para que MeteoCam controle físicamente el dispositivo:
 
@@ -590,7 +590,7 @@ Información necesaria para que MeteoCam controle físicamente el dispositivo:
 - capacidades descubiertas;
 - configuración específica del hardware.
 
-Catálogo central
+### Catálogo central
 
 Información funcional que MeteoArchidona necesita conocer:
 
@@ -612,14 +612,14 @@ navegador.
 
 ---
 
-9. Primer arranque
+## 9. Primer arranque
 
 Si no existe ninguna cámara configurada, MeteoCam deberá ofrecer una
 experiencia aproximadamente equivalente a:
 
 No hay cámaras configuradas.
 
-[ Buscar cámaras automáticamente ]
+[ Buscar cámaras automáticamente ]  
 [ Añadir cámara manualmente ]
 
 El procedimiento ideal cuando llegue el hardware será:
@@ -655,7 +655,7 @@ Siempre existirá la alternativa de configuración manual.
 
 ---
 
-10. Descubrimiento automático
+## 10. Descubrimiento automático
 
 El descubrimiento será un subsistema independiente.
 
@@ -691,7 +691,7 @@ El descubrimiento deberá distinguir cuando sea posible entre:
 
 ---
 
-11. Sistema de estados
+## 11. Sistema de estados
 
 Los dispositivos tendrán estados explícitos.
 
@@ -710,10 +710,10 @@ propios.
 
 Ejemplo:
 
-Dispositivo OMVI........ CONECTADO
-Panorámica.............. CONECTADA
-Stream panorámico....... OK
-PT...................... CONECTADA
+Dispositivo OMVI........ CONECTADO  
+Panorámica.............. CONECTADA  
+Stream panorámico....... OK  
+PT...................... CONECTADA  
 Stream PT............... ERROR
 
 Esto permitirá evitar que el fallo de una vista convierta necesariamente todo
@@ -726,7 +726,7 @@ La interfaz representará estos estados de manera comprensible para el usuario.
 
 ---
 
-12. Operaciones asíncronas
+## 12. Operaciones asíncronas
 
 Ninguna operación potencialmente lenta debe bloquear el hilo principal de Qt.
 
@@ -749,7 +749,7 @@ servicio remoto no responda.
 
 ---
 
-13. Vídeo en directo
+## 13. Vídeo en directo
 
 La primera versión con hardware real únicamente reproducirá vídeo.
 
@@ -792,7 +792,7 @@ Cuando sea conveniente, el visor permanente podrá utilizar streams de menor
 resolución y reservar los streams principales de máxima calidad para futuras
 funciones de captura o grabación.
 
-13.1 Dispositivos multivista
+### 13.1 Dispositivos multivista
 
 La arquitectura del visor deberá permitir que un dispositivo exponga varias
 vistas simultáneamente.
@@ -818,7 +818,7 @@ mientras la cámara PT observa un sector específico.
 
 ---
 
-14. Identidad visual y temas
+## 14. Identidad visual y temas
 
 MeteoCam utilizará una estética de aplicación de escritorio clásica y técnica.
 
@@ -837,7 +837,7 @@ un aspecto de cliente pesado tradicional:
 
 Se definen inicialmente dos temas oficiales:
 
-MeteoCam Classic Claro
+### MeteoCam Classic Claro
 
 Tema clásico claro basado principalmente en:
 
@@ -848,7 +848,7 @@ Tema clásico claro basado principalmente en:
 - marcos técnicos;
 - contraste elevado.
 
-MeteoCam Classic Oscuro
+### MeteoCam Classic Oscuro
 
 Versión oscura de la misma identidad visual.
 
@@ -896,7 +896,7 @@ innecesarias.
 
 ---
 
-15. Diagnóstico
+## 15. Diagnóstico
 
 El diagnóstico es un requisito fundamental del proyecto.
 
@@ -908,47 +908,47 @@ Una prueba de conexión deberá ejecutar comprobaciones progresivas.
 
 Ejemplo conceptual:
 
-Iniciando diagnóstico: Los Llanos
-Dispositivo: OMVI principal
+Iniciando diagnóstico: Los Llanos  
+Dispositivo: OMVI principal  
 IP configurada: 192.168.1.50
 
-Comprobando accesibilidad de red...
+Comprobando accesibilidad de red...  
 OK
 
-Comprobando servicios...
+Comprobando servicios...  
 OK
 
-Identificando dispositivo...
+Identificando dispositivo...  
 Reolink OMVI 3i PoE
 
-Detectando vistas/canales...
+Detectando vistas/canales...  
 2 vistas detectadas
 
-Vista panorámica...
+Vista panorámica...  
 OK
 
-Vista PT...
+Vista PT...  
 OK
 
-Comprobando RTSP...
+Comprobando RTSP...  
 OK
 
-Comprobando autenticación...
+Comprobando autenticación...  
 OK
 
-Solicitando stream panorámico principal...
+Solicitando stream panorámico principal...  
 OK
 
-Códec detectado: H.265
+Códec detectado: H.265  
 Resolución detectada: 5120 x 1920
 
-Solicitando stream PT principal...
+Solicitando stream PT principal...  
 OK
 
-Códec detectado: H.265
+Códec detectado: H.265  
 Resolución detectada: 3840 x 2160
 
-RESULTADO:
+RESULTADO:  
 DISPOSITIVO OPERATIVO
 
 Si una etapa falla, las etapas dependientes podrán aparecer como no probadas.
@@ -958,7 +958,7 @@ si únicamente falla una de sus vistas o streams.
 
 ---
 
-16. Códigos de error
+## 16. Códigos de error
 
 Los errores tendrán códigos internos estructurados por subsistema.
 
@@ -995,7 +995,7 @@ no se implementen en la primera fase.
 
 ---
 
-17. Logging
+## 17. Logging
 
 MeteoCam tendrá logging persistente desde sus primeras versiones.
 
@@ -1041,24 +1041,24 @@ Nunca se registrarán:
 
 ---
 
-18. Informe de diagnóstico
+## 18. Informe de diagnóstico
 
 MeteoCam deberá poder generar posteriormente un informe técnico fácilmente
 compartible.
 
 Ejemplo:
 
-MeteoArchidona Camera Agent
+MeteoArchidona Camera Agent  
 Diagnóstico
 
-Estación: Los Llanos
-Dispositivo: OMVI principal
-Modelo: Reolink OMVI 3i PoE
+Estación: Los Llanos  
+Dispositivo: OMVI principal  
+Modelo: Reolink OMVI 3i PoE  
 Versión MeteoCam: 0.1.0
 
-Red.................... OK
-IP..................... 192.168.1.50
-Conectividad........... OK
+Red.................... OK  
+IP..................... 192.168.1.50  
+Conectividad........... OK  
 HTTP/HTTPS............. OK
 
 Vistas detectadas...... 2
@@ -1074,7 +1074,7 @@ PT:
 
 Motor de vídeo......... OK
 
-Último error:
+Último error:  
 CAM-RTSP-002
 
 El informe nunca incluirá contraseñas ni secretos.
@@ -1084,7 +1084,7 @@ se trabaje con hardware real.
 
 ---
 
-19. Reconexión
+## 19. Reconexión
 
 MeteoCam deberá asumir que una cámara IP puede:
 
@@ -1124,7 +1124,7 @@ implementación y las pruebas reales.
 
 ---
 
-20. Catálogo central de cámaras y dispositivos
+## 20. Catálogo central de cámaras y dispositivos
 
 Las cámaras de MeteoArchidona deberán estar representadas posteriormente en la
 base de datos PostgreSQL central.
@@ -1147,27 +1147,27 @@ VISTAS / CANALES
 Una entidad central de dispositivo podrá contener, entre otros campos que se
 determinarán durante el diseño de la API:
 
-id
-estacion_id
-codigo
-nombre
-fabricante
-modelo
-activa
-publica
-orden
+id  
+estacion_id  
+codigo  
+nombre  
+fabricante  
+modelo  
+activa  
+publica  
+orden  
 estado
 
 Una entidad de vista física/lógica podrá contener posteriormente:
 
-id
-dispositivo_id
-codigo
-nombre
-tipo
-movil
-activa
-publica
+id  
+dispositivo_id  
+codigo  
+nombre  
+tipo  
+movil  
+activa  
+publica  
 orden
 
 No se considera necesario almacenar centralmente las credenciales privadas de
@@ -1205,30 +1205,30 @@ necesidad de modificar manualmente su código fuente.
 
 ---
 
-21. Vistas físicas y vistas autorizadas
+## 21. Vistas físicas y vistas autorizadas
 
 Debe distinguirse entre dos conceptos relacionados pero diferentes.
 
-21.1 Vista física o canal
+### 21.1 Vista física o canal
 
 Representa una fuente visual real proporcionada por el dispositivo.
 
 Ejemplo OMVI:
 
-PANORÁMICA
+PANORÁMICA  
 PT
 
-21.2 Vista meteorológica autorizada
+### 21.2 Vista meteorológica autorizada
 
 Representa un encuadre funcional autorizado por MeteoArchidona.
 
 Ejemplo sobre la vista PT:
 
-OESTE
-SUROESTE
-SUR
-SURESTE
-ESTE
+OESTE  
+SUROESTE  
+SUR  
+SURESTE  
+ESTE  
 SIERRA
 
 Por tanto:
@@ -1252,16 +1252,16 @@ No deberán estar codificadas directamente en el visor web.
 
 Conceptualmente una entidad de vista autorizada podrá incluir posteriormente:
 
-id
-vista_fisica_id
-codigo
-nombre
-descripcion
-orden
-tipo
-activa
-publica
-predeterminada
+id  
+vista_fisica_id  
+codigo  
+nombre  
+descripcion  
+orden  
+tipo  
+activa  
+publica  
+predeterminada  
 referencia_interna
 
 La estructura física definitiva se diseñará al implementar este subsistema.
@@ -1296,7 +1296,7 @@ El navegador trabajará con identificadores públicos controlados por la API.
 
 ---
 
-22. PTZ administrativo futuro
+## 22. PTZ administrativo futuro
 
 El control PTZ no forma parte de la primera fase, pero la arquitectura debe
 permitir incorporarlo.
@@ -1328,7 +1328,7 @@ la que dispone de movimiento PT.
 
 ---
 
-23. Presets y vistas públicas
+## 23. Presets y vistas públicas
 
 La web pública de MeteoArchidona NUNCA permitirá al visitante mover libremente
 la cámara.
@@ -1349,12 +1349,12 @@ verificadas y autorizadas por MeteoArchidona.
 
 Ejemplo:
 
-OESTE
-SUROESTE
-SUR
-SURESTE
-ESTE
-SIERRA
+OESTE  
+SUROESTE  
+SUR  
+SURESTE  
+ESTE  
+SIERRA  
 PANORÁMICA
 
 La API deberá aplicar esta restricción en servidor.
@@ -1366,7 +1366,7 @@ ser rechazada.
 
 La existencia de una panorámica fija permite además diferenciar:
 
-Vista pública permanente
+### Vista pública permanente
 
 Puede mantenerse visible sin necesidad de controlar físicamente la orientación.
 
@@ -1374,19 +1374,19 @@ Ejemplo:
 
 PANORÁMICA 180°
 
-Vista pública controlable
+### Vista pública controlable
 
 Puede depender de presets autorizados y políticas de reserva.
 
 Ejemplo:
 
-PT -> OESTE
-PT -> SUR
+PT -> OESTE  
+PT -> SUR  
 PT -> SIERRA
 
 ---
 
-24. Acceso público y usuarios registrados
+## 24. Acceso público y usuarios registrados
 
 La visualización en directo de las cámaras marcadas como públicas no requerirá
 registro en MeteoArchidona.
@@ -1423,18 +1423,18 @@ Esta decisión deberá tomarse atendiendo a:
 
 Conceptualmente existirán al menos tres niveles:
 
-Visitante
+### Visitante
 
 Podrá visualizar las cámaras públicas sin registrarse.
 
 Las funcionalidades adicionales dependerán de la política que se establezca.
 
-Usuario registrado
+### Usuario registrado
 
 Podrá visualizar igualmente las cámaras públicas y podrá disponer de
 funcionalidades adicionales que se definan posteriormente.
 
-Administrador
+### Administrador
 
 Dispondrá de las funciones de administración, mantenimiento y control
 autorizadas, incluyendo aquellas que nunca deben estar disponibles
@@ -1442,7 +1442,7 @@ públicamente.
 
 ---
 
-25. Referencia lógica de orientación
+## 25. Referencia lógica de orientación
 
 Para las vistas PT de MeteoCam se podrá utilizar el Sur como referencia
 lógica.
@@ -1453,12 +1453,12 @@ SUR = 0 grados MeteoCam
 
 A partir de esa referencia:
 
-SO = -45 grados
-O  = -90 grados
+SO = -45 grados  
+O  = -90 grados  
 NO = -135 grados
 
-SE = +45 grados
-E  = +90 grados
+SE = +45 grados  
+E  = +90 grados  
 NE = +135 grados
 
 Estos valores son referencias conceptuales.
@@ -1478,12 +1478,12 @@ instalación, que deberá ajustarse correctamente durante el montaje.
 
 ---
 
-26. Panorámica meteorológica
+## 26. Panorámica meteorológica
 
 Con la incorporación de dispositivos como la OMVI deben distinguirse dos
 conceptos.
 
-26.1 Panorámica óptica permanente
+### 26.1 Panorámica óptica permanente
 
 La OMVI 3i PoE proporciona una panorámica superior fija de aproximadamente
 180 grados.
@@ -1502,7 +1502,7 @@ Su función meteorológica podrá ser:
 Esta característica reduce la necesidad de mover continuamente la cámara para
 obtener contexto general.
 
-26.2 Recorrido PT meteorológico
+### 26.2 Recorrido PT meteorológico
 
 Independientemente de la panorámica fija, se mantiene previsto un recorrido
 direccional específicamente diseñado para observación meteorológica.
@@ -1563,14 +1563,14 @@ La solución definitiva se decidirá después de probar el hardware.
 
 ---
 
-27. Capacidades avanzadas OMVI previstas para investigación
+## 27. Capacidades avanzadas OMVI previstas para investigación
 
 La OMVI dispone de capacidades específicas que pueden resultar interesantes
 para MeteoCam.
 
 Su presencia en este documento no implica compromiso de implementación.
 
-27.1 Posición de guardia
+### 27.1 Posición de guardia
 
 La cámara admite una posición de guardia.
 
@@ -1578,12 +1578,12 @@ MeteoCam podrá estudiar su utilización como orientación PT de referencia.
 
 Ejemplo conceptual:
 
-POSICIÓN DE GUARDIA:
+POSICIÓN DE GUARDIA:  
 SUR
 
 La posición real se determinará durante la instalación.
 
-27.2 Presets
+### 27.2 Presets
 
 La OMVI admite hasta 64 posiciones preestablecidas.
 
@@ -1591,19 +1591,19 @@ MeteoCam necesitará previsiblemente muchas menos para el uso meteorológico.
 
 Ejemplo:
 
-NO
-O
-SO
-S
-SE
-E
-NE
+NO  
+O  
+SO  
+S  
+SE  
+E  
+NE  
 SIERRA
 
 Los presets internos del fabricante deberán permanecer desacoplados de los
 identificadores públicos utilizados por MeteoArchidona.
 
-27.3 Patrulla
+### 27.3 Patrulla
 
 La OMVI admite una ruta de patrulla con hasta cuatro puntos.
 
@@ -1611,7 +1611,7 @@ Se comprobará si resulta útil para alguna operación concreta.
 
 No se dependerá de ella para el recorrido meteorológico completo.
 
-27.4 SyncTrack
+### 27.4 SyncTrack
 
 La OMVI dispone de seguimiento sincronizado entre la panorámica y la cámara PT.
 
@@ -1622,7 +1622,7 @@ contexto meteorológico.
 
 No se incorporará automáticamente a la arquitectura operativa.
 
-27.5 Pinpoint
+### 27.5 Pinpoint
 
 El software compatible de Reolink permite seleccionar una zona de la
 panorámica y dirigir la vista PT hacia ella.
@@ -1640,7 +1640,7 @@ Sin embargo, antes de diseñar una función MeteoCam basada en Pinpoint deberá
 comprobarse si Reolink expone esa operación mediante mecanismos accesibles a
 software de terceros.
 
-27.6 Auto Sweep y otras funciones
+### 27.6 Auto Sweep y otras funciones
 
 Las funciones automáticas específicas disponibles en firmware o clientes
 Reolink se investigarán cuando exista hardware real.
@@ -1650,7 +1650,7 @@ necesariamente expuesta mediante ONVIF, CGI u otra API.
 
 ---
 
-28. Reserva futura del selector público
+## 28. Reserva futura del selector público
 
 Cuando se habilite el selector público de vistas PT, no se permitirá que
 múltiples usuarios cambien continuamente la orientación.
@@ -1695,7 +1695,7 @@ pública y utilizable mientras la PT está reservada.
 
 ---
 
-29. Bloqueo administrativo de posición
+## 29. Bloqueo administrativo de posición
 
 Un administrador autorizado podrá fijar una vista PT en una posición
 determinada e impedir temporalmente cualquier modificación procedente de
@@ -1706,13 +1706,13 @@ las que interese mantener permanentemente un encuadre.
 
 Ejemplo:
 
-Dispositivo: Los Llanos — OMVI principal
-Vista física: PT
+Dispositivo: Los Llanos — OMVI principal  
+Vista física: PT  
 Vista meteorológica: OESTE
 
 BLOQUEO ADMINISTRATIVO ACTIVO
 
-Motivo:
+Motivo:  
 Seguimiento de tormenta
 
 Mientras exista un bloqueo administrativo:
@@ -1743,11 +1743,11 @@ Su estado deberá persistirse centralmente.
 
 Conceptualmente podrá almacenarse información equivalente a:
 
-vista_fisica_id
-bloqueada
-vista_autorizada_id
-bloqueada_por_usuario_id
-bloqueada_desde
+vista_fisica_id  
+bloqueada  
+vista_autorizada_id  
+bloqueada_por_usuario_id  
+bloqueada_desde  
 motivo
 
 El modelo físico definitivo se decidirá durante la implementación.
@@ -1772,7 +1772,7 @@ sido fijada por MeteoArchidona y el motivo público correspondiente.
 
 ---
 
-30. Comunicación con la API MeteoArchidona
+## 30. Comunicación con la API MeteoArchidona
 
 MeteoCam deberá estar preparado arquitectónicamente para consumir la API
 MeteoArchidona.
@@ -1831,7 +1831,7 @@ activar esta comunicación en producción.
 
 ---
 
-31. Sistema persistente de órdenes
+## 31. Sistema persistente de órdenes
 
 La comunicación remota no se limitará a enviar comandos efímeros desde un
 navegador.
@@ -1892,27 +1892,27 @@ MeteoCam es el ejecutor local de los trabajos relacionados con las cámaras.
 
 ---
 
-32. Modelo conceptual de órdenes
+## 32. Modelo conceptual de órdenes
 
 Se estudiará un sistema general de órdenes en lugar de crear un mecanismo
 independiente para cada futura función.
 
 Conceptualmente una orden podrá disponer de información equivalente a:
 
-id
-dispositivo_id
-vista_id
-tipo
-estado
-parametros
-creada_por
-creada_en
-iniciar_en
-finalizar_en
-recibida_en
-iniciada_en
-finalizada_en
-resultado
+id  
+dispositivo_id  
+vista_id  
+tipo  
+estado  
+parametros  
+creada_por  
+creada_en  
+iniciar_en  
+finalizar_en  
+recibida_en  
+iniciada_en  
+finalizada_en  
+resultado  
 error
 
 "vista_id" podrá ser opcional para operaciones que afecten al dispositivo
@@ -1922,23 +1922,23 @@ El diseño físico definitivo se realizará cuando se implemente el subsistema.
 
 Los estados podrán incluir inicialmente conceptos como:
 
-PENDIENTE
-ACEPTADA
-EN_EJECUCION
-COMPLETADA
-CANCELADA
+PENDIENTE  
+ACEPTADA  
+EN_EJECUCION  
+COMPLETADA  
+CANCELADA  
 ERROR
 
 Podrán añadirse otros estados si la implementación real lo necesita.
 
 Entre los tipos futuros de orden podrán existir:
 
-TIMELAPSE
-CAPTURAR_IMAGEN
-IR_A_VISTA
-FIJAR_VISTA
-LIBERAR_VISTA
-INICIAR_GRABACION
+TIMELAPSE  
+CAPTURAR_IMAGEN  
+IR_A_VISTA  
+FIJAR_VISTA  
+LIBERAR_VISTA  
+INICIAR_GRABACION  
 DETENER_GRABACION
 
 Esta enumeración describe capacidades futuras.
@@ -1953,7 +1953,7 @@ deberán diseñarse antes de activar órdenes reales.
 
 ---
 
-33. Timelapses iniciados desde Administración
+## 33. Timelapses iniciados desde Administración
 
 En una fase futura, un administrador podrá iniciar un timelapse desde el visor
 o área administrativa de MeteoArchidona.
@@ -1989,20 +1989,20 @@ Si especifica directamente la fecha/hora final, se utilizará ese límite.
 
 Ejemplo panorámico:
 
-Dispositivo:   Los Llanos — OMVI principal
-Vista:         Panorámica
-Inicio:        Ahora
-Finalización:  18:30
+Dispositivo:   Los Llanos — OMVI principal  
+Vista:         Panorámica  
+Inicio:        Ahora  
+Finalización:  18:30  
 Intervalo:     1 minuto
 
 [ Iniciar timelapse ]
 
 Ejemplo dirigido:
 
-Dispositivo:   Los Llanos — OMVI principal
-Vista:         PT — OESTE
-Inicio:        Ahora
-Finalización:  18:30
+Dispositivo:   Los Llanos — OMVI principal  
+Vista:         PT — OESTE  
+Inicio:        Ahora  
+Finalización:  18:30  
 Intervalo:     1 minuto
 
 [ Iniciar timelapse ]
@@ -2032,7 +2032,7 @@ La ejecución del timelapse no dependerá de mantener abierta la página web.
 
 ---
 
-34. Cancelación y recuperación de trabajos
+## 34. Cancelación y recuperación de trabajos
 
 Un administrador podrá solicitar posteriormente la cancelación de un timelapse
 o de otro trabajo cancelable.
@@ -2061,7 +2061,7 @@ temporalmente la comunicación con la API.
 
 ---
 
-35. Auditoría de operaciones remotas
+## 35. Auditoría de operaciones remotas
 
 Las operaciones administrativas relacionadas con cámaras deberán integrarse
 posteriormente con el subsistema general de auditoría de MeteoArchidona.
@@ -2091,7 +2091,7 @@ Ambos sistemas tienen finalidades diferentes:
 
 ---
 
-36. Publicación futura del vídeo
+## 36. Publicación futura del vídeo
 
 La publicación del vídeo en la web queda fuera de la primera fase.
 
@@ -2134,7 +2134,7 @@ independiente y se determinará mediante pruebas reales.
 
 ---
 
-37. Funciones futuras fuera de la primera fase
+## 37. Funciones futuras fuera de la primera fase
 
 La arquitectura deberá permitir incorporar posteriormente:
 
@@ -2176,7 +2176,7 @@ Estas capacidades no justifican introducir complejidad prematuramente.
 
 ---
 
-38. Episodios meteorológicos futuros
+## 38. Episodios meteorológicos futuros
 
 En una fase posterior MeteoCam podrá reaccionar a episodios meteorológicos.
 
@@ -2221,7 +2221,7 @@ No se implementará nada de esto durante la primera fase.
 
 ---
 
-39. Automatización meteorológica futura
+## 39. Automatización meteorológica futura
 
 En el futuro podría existir relación entre:
 
@@ -2253,7 +2253,7 @@ expresamente autorizada para sustituir dicho bloqueo.
 
 ---
 
-40. Hoja de ruta
+## 40. Hoja de ruta
 
 La hoja de ruta constituye la referencia principal para decidir qué trabajo
 debe realizarse a continuación.
@@ -2263,16 +2263,16 @@ innecesaria del siguiente.
 
 ---
 
-HITO 0 — Fundación del repositorio
+# HITO 0 — Fundación del repositorio
 
-Estado: EN CURSO
+**Estado: COMPLETADO**
 
 Objetivo:
 
 Crear una base de desarrollo limpia y reproducible antes de comenzar la
 aplicación.
 
-Sprint 0.1 — Documentación de arquitectura
+### Sprint 0.1 — Documentación de arquitectura
 
 Objetivos:
 
@@ -2283,11 +2283,11 @@ Objetivos:
 - establecer hoja de ruta;
 - utilizar este documento como referencia de continuidad.
 
-Estado: COMPLETADO
+**Estado: COMPLETADO**
 
 La documentación continuará actualizándose durante todo el proyecto.
 
-Sprint 0.2 — Integración continua
+### Sprint 0.2 — Integración continua
 
 Objetivos:
 
@@ -2304,7 +2304,7 @@ Archivo:
 
 .github/workflows/ci.yml
 
-Estado: COMPLETADO
+**Estado: COMPLETADO**
 
 Se comprobó inicialmente la instalación real de las dependencias gráficas.
 
@@ -2317,7 +2317,7 @@ realiza las comprobaciones básicas del paquete.
 Cuando las pruebas gráficas lo requieran se incorporarán comprobaciones
 específicas sin penalizar innecesariamente todos los commits del proyecto.
 
-Sprint 0.3 — Proyecto Python
+### Sprint 0.3 — Proyecto Python
 
 Objetivos:
 
@@ -2328,13 +2328,13 @@ Objetivos:
 - preparar instalación editable;
 - preparar pytest.
 
-Estado: COMPLETADO
+**Estado: COMPLETADO**
 
 La dependencia gráfica inicial es PySide6.
 
 La estructura utiliza el directorio "src".
 
-Sprint 0.4 — Primer test
+### Sprint 0.4 — Primer test
 
 Objetivos:
 
@@ -2344,19 +2344,52 @@ Objetivos:
 - garantizar CI verde;
 - mantener el workflow rápido.
 
-Estado: PENDIENTE
+**Estado: COMPLETADO**
+
+Se creó el primer test automatizado del paquete MeteoCam.
+
+Archivo:
+
+tests/test_package.py
+
+El test comprueba inicialmente la importación y versión pública del paquete.
+
+El workflow:
+
+.github/workflows/ci.yml
+
+ejecuta ya `pytest` realmente en cada validación.
+
+La primera ejecución del test quedó validada correctamente.
+
+El commit:
+
+"Crear primer test del paquete MeteoCam"
+
+fue validado por CI.
+
+Posteriormente el commit:
+
+"Ejecutar pytest en CI"
+
+activó la ejecución efectiva de la suite de pruebas desde GitHub Actions.
+
+CI #10 finalizó correctamente en aproximadamente 11 segundos, manteniendo el
+objetivo de disponer de un ciclo de validación rápido.
+
+Con la finalización del Sprint 0.4 queda completado el HITO 0.
 
 ---
 
-HITO 1 — Primera aplicación de escritorio
+# HITO 1 — Primera aplicación de escritorio
 
-Estado: PENDIENTE
+**Estado: EN CURSO**
 
 Objetivo:
 
 Conseguir que MeteoCam arranque como aplicación PySide6 real.
 
-Sprint 1.1 — Paquete MeteoCam
+### Sprint 1.1 — Paquete MeteoCam
 
 Objetivos:
 
@@ -2365,18 +2398,25 @@ Objetivos:
 - crear punto de entrada;
 - comprobar importación del paquete.
 
-Estado: EN CURSO
+**Estado: EN CURSO**
 
 Ya se han completado:
 
 - creación de "src/meteocam";
 - creación del paquete;
 - definición inicial de versión;
-- comprobación de importación desde CI.
+- comprobación de importación desde CI;
+- primer test automatizado del paquete;
+- ejecución de pytest desde CI.
 
-Queda pendiente el punto de entrada de la aplicación.
+Queda pendiente:
 
-Sprint 1.2 — Ventana principal
+- crear el punto de entrada de la aplicación.
+
+La creación del punto de entrada constituye el siguiente trabajo inmediato del
+proyecto.
+
+### Sprint 1.2 — Ventana principal
 
 Objetivos:
 
@@ -2389,7 +2429,7 @@ Objetivos:
 
 La primera ventana no necesita todavía conectarse a ninguna cámara.
 
-Sprint 1.3 — Esqueleto visual
+### Sprint 1.3 — Esqueleto visual
 
 Objetivos:
 
@@ -2417,16 +2457,16 @@ No implementar todavía funcionalidad compleja detrás de los botones.
 
 ---
 
-HITO 2 — Dominio de cámaras
+# HITO 2 — Dominio de cámaras
 
-Estado: PENDIENTE
+**Estado: PENDIENTE**
 
 Objetivo:
 
 Separar completamente la aplicación del fabricante y representar correctamente
 dispositivos con una o varias vistas.
 
-Sprint 2.1 — Modelos básicos
+### Sprint 2.1 — Modelos básicos
 
 Crear modelos para:
 
@@ -2444,12 +2484,12 @@ No introducir complejidad innecesaria.
 
 El modelo deberá admitir:
 
-dispositivo de una vista
+dispositivo de una vista  
 dispositivo de varias vistas
 
 sin requerir clases específicas en la GUI.
 
-Sprint 2.2 — Estados
+### Sprint 2.2 — Estados
 
 Crear el sistema formal de estados:
 
@@ -2463,7 +2503,7 @@ Crear el sistema formal de estados:
 
 Preparar la posibilidad de estados por vista/stream cuando resulte necesario.
 
-Sprint 2.3 — Abstracción Camera
+### Sprint 2.3 — Abstracción Camera
 
 Definir la interfaz común que utilizará la aplicación.
 
@@ -2474,7 +2514,7 @@ dispositivo.
 
 No añadir anticipadamente métodos de grabación, episodios o automatización.
 
-Sprint 2.4 — SimulatedCamera
+### Sprint 2.4 — SimulatedCamera
 
 Implementar una cámara simulada que permita:
 
@@ -2494,15 +2534,15 @@ Se deberá poder simular al menos:
 
 ---
 
-HITO 3 — Logging y errores
+# HITO 3 — Logging y errores
 
-Estado: PENDIENTE
+**Estado: PENDIENTE**
 
 Objetivo:
 
 Instrumentar MeteoCam antes de empezar las integraciones reales.
 
-Sprint 3.1 — Logging persistente
+### Sprint 3.1 — Logging persistente
 
 Implementar:
 
@@ -2513,7 +2553,7 @@ Implementar:
 - excepciones;
 - cambios de estado.
 
-Sprint 3.2 — Protección de secretos
+### Sprint 3.2 — Protección de secretos
 
 Implementar mecanismos para impedir que aparezcan:
 
@@ -2521,7 +2561,7 @@ Implementar mecanismos para impedir que aparezcan:
 - credenciales;
 - URLs RTSP completas con secretos.
 
-Sprint 3.3 — Catálogo de errores
+### Sprint 3.3 — Catálogo de errores
 
 Crear las familias:
 
@@ -2538,20 +2578,20 @@ Crear las familias:
 
 ---
 
-HITO 4 — Configuración de cámaras
+# HITO 4 — Configuración de cámaras
 
-Estado: PENDIENTE
+**Estado: PENDIENTE**
 
 Objetivo:
 
 Poder administrar dispositivos sin depender todavía de descubrimiento
 automático.
 
-Sprint 4.1 — Persistencia local
+### Sprint 4.1 — Persistencia local
 
 Implementar repositorio local de configuración.
 
-Sprint 4.2 — Gestión de estaciones
+### Sprint 4.2 — Gestión de estaciones
 
 Permitir seleccionar/asociar un dispositivo a una estación.
 
@@ -2559,7 +2599,7 @@ Primera estación:
 
 Los Llanos
 
-Sprint 4.3 — Añadir cámara manualmente
+### Sprint 4.3 — Añadir cámara manualmente
 
 Campos iniciales:
 
@@ -2574,7 +2614,7 @@ Campos iniciales:
 La configuración de vistas y streams deberá poder ampliarse cuando se conozca
 el hardware real.
 
-Sprint 4.4 — Editar y eliminar
+### Sprint 4.4 — Editar y eliminar
 
 Permitir:
 
@@ -2584,15 +2624,15 @@ Permitir:
 
 ---
 
-HITO 5 — Diagnóstico simulado
+# HITO 5 — Diagnóstico simulado
 
-Estado: PENDIENTE
+**Estado: PENDIENTE**
 
 Objetivo:
 
 Construir el sistema de diagnóstico antes de depender del hardware real.
 
-Sprint 5.1 — Motor de diagnóstico
+### Sprint 5.1 — Motor de diagnóstico
 
 Definir etapas y resultados.
 
@@ -2603,7 +2643,7 @@ Incluir conceptualmente:
 - vistas/canales;
 - streams.
 
-Sprint 5.2 — Diagnóstico visual
+### Sprint 5.2 — Diagnóstico visual
 
 Mostrar:
 
@@ -2615,7 +2655,7 @@ Mostrar:
 - código de error;
 - explicación.
 
-Sprint 5.3 — Simulación de fallos
+### Sprint 5.3 — Simulación de fallos
 
 Simular:
 
@@ -2627,29 +2667,29 @@ Simular:
 - fallo parcial de un dispositivo multivista;
 - recuperación.
 
-Sprint 5.4 — Informe
+### Sprint 5.4 — Informe
 
 Generar informe de diagnóstico sin secretos.
 
 ---
 
-HITO 6 — Descubrimiento LAN
+# HITO 6 — Descubrimiento LAN
 
-Estado: PENDIENTE
+**Estado: PENDIENTE**
 
 Objetivo:
 
 Preparar el sistema Plug & Play.
 
-Sprint 6.1 — Interfaz de descubrimiento
+### Sprint 6.1 — Interfaz de descubrimiento
 
 Separar completamente descubrimiento y dispositivos.
 
-Sprint 6.2 — WS-Discovery / ONVIF
+### Sprint 6.2 — WS-Discovery / ONVIF
 
 Investigar e implementar cuando proceda.
 
-Sprint 6.3 — Reolink
+### Sprint 6.3 — Reolink
 
 Comprobar con hardware real qué mecanismos adicionales son útiles.
 
@@ -2664,7 +2704,7 @@ Investigar especialmente:
 - capacidades PT;
 - presets.
 
-Sprint 6.4 — Integración GUI
+### Sprint 6.4 — Integración GUI
 
 Implementar:
 
@@ -2677,9 +2717,9 @@ La entrada manual continuará existiendo siempre.
 
 ---
 
-HITO 7 — Hardware Reolink real
+# HITO 7 — Hardware Reolink real
 
-Estado: PENDIENTE
+**Estado: PENDIENTE**
 
 Este hito comenzará cuando dispongamos físicamente de la cámara seleccionada
 para Los Llanos.
@@ -2688,13 +2728,13 @@ La candidata preferente actual es la Reolink OMVI 3i PoE.
 
 La arquitectura no dependerá de que finalmente se adquiera ese modelo.
 
-Sprint 7.1 — Primer descubrimiento
+### Sprint 7.1 — Primer descubrimiento
 
 Objetivo:
 
 Encontrar la cámara conectada en Los Llanos.
 
-Sprint 7.2 — Identificación
+### Sprint 7.2 — Identificación
 
 Obtener todo lo posible automáticamente:
 
@@ -2706,11 +2746,11 @@ Obtener todo lo posible automáticamente:
 - vistas/canales;
 - capacidades.
 
-Sprint 7.3 — Autenticación
+### Sprint 7.3 — Autenticación
 
 Introducir las credenciales de forma segura y comprobar acceso.
 
-Sprint 7.4 — Servicios
+### Sprint 7.4 — Servicios
 
 Comprobar:
 
@@ -2721,7 +2761,7 @@ Comprobar:
 - CGI/API cuando proceda;
 - otros servicios relevantes.
 
-Sprint 7.5 — Investigación multicanal OMVI
+### Sprint 7.5 — Investigación multicanal OMVI
 
 Si la cámara seleccionada es la OMVI, determinar experimentalmente:
 
@@ -2741,7 +2781,7 @@ Si la cámara seleccionada es la OMVI, determinar experimentalmente:
 
 No se codificará ninguna correspondencia de canales hasta haberla comprobado.
 
-Sprint 7.6 — Capacidades de control
+### Sprint 7.6 — Capacidades de control
 
 Comprobar qué operaciones pueden realizarse desde software externo:
 
@@ -2756,27 +2796,27 @@ Comprobar qué operaciones pueden realizarse desde software externo:
 
 Cada función deberá quedar clasificada como:
 
-SOPORTADA
-NO SOPORTADA
-PARCIAL
-PENDIENTE
+SOPORTADA  
+NO SOPORTADA  
+PARCIAL  
+PENDIENTE  
 SOLO SOFTWARE REOLINK
 
-Sprint 7.7 — ReolinkCamera
+### Sprint 7.7 — ReolinkCamera
 
 Implementar el adaptador real utilizando únicamente capacidades comprobadas.
 
 ---
 
-HITO 8 — Vídeo real
+# HITO 8 — Vídeo real
 
-Estado: PENDIENTE
+**Estado: PENDIENTE**
 
 Objetivo:
 
 Conseguir el primer directo estable dentro de MeteoCam.
 
-Sprint 8.1 — Pruebas de streams
+### Sprint 8.1 — Pruebas de streams
 
 Comprobar para cada vista:
 
@@ -2797,7 +2837,7 @@ PT
     MAIN
     SUB
 
-Sprint 8.2 — Selección del motor
+### Sprint 8.2 — Selección del motor
 
 Comparar según sea necesario:
 
@@ -2807,7 +2847,7 @@ Comparar según sea necesario:
 
 Elegir basándonos en pruebas reales.
 
-Sprint 8.3 — Visor
+### Sprint 8.3 — Visor
 
 Integrar vídeo en la ventana PySide6.
 
@@ -2816,7 +2856,7 @@ Comenzar por una vista estable.
 Después, si el hardware y el rendimiento lo permiten, probar visualización
 simultánea de varias vistas.
 
-Sprint 8.4 — Reconexión
+### Sprint 8.4 — Reconexión
 
 Probar:
 
@@ -2827,7 +2867,7 @@ Probar:
 - recuperación;
 - credenciales incorrectas.
 
-Sprint 8.5 — Rendimiento
+### Sprint 8.5 — Rendimiento
 
 Medir:
 
@@ -2841,9 +2881,9 @@ Medir:
 
 ---
 
-HITO 9 — Integración con API y catálogo central
+# HITO 9 — Integración con API y catálogo central
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 Objetivo:
 
@@ -2871,9 +2911,9 @@ La integración deberá mantener separados:
 
 ---
 
-HITO 10 — PTZ local
+# HITO 10 — PTZ local
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 No comenzar hasta completar satisfactoriamente la fase de vídeo.
 
@@ -2893,15 +2933,15 @@ con capacidad PT.
 
 ---
 
-HITO 11 — Observación panorámica meteorológica
+# HITO 11 — Observación panorámica meteorológica
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 Objetivo:
 
 Aprovechar de manera óptima las capacidades panorámicas y PT disponibles.
 
-Si el dispositivo dispone de panorámica fija
+### Si el dispositivo dispone de panorámica fija
 
 Ejemplo OMVI:
 
@@ -2920,7 +2960,7 @@ Comprobar físicamente:
 - utilidad meteorológica;
 - privacidad.
 
-Vista PT
+### Vista PT
 
 Crear el recorrido autorizado candidato:
 
@@ -2948,9 +2988,9 @@ excluyentes.
 
 ---
 
-HITO 12 — Catálogo central de vistas y control administrativo
+# HITO 12 — Catálogo central de vistas y control administrativo
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 Objetivo:
 
@@ -2975,9 +3015,9 @@ La API será la autoridad que determine qué vistas pueden ofrecerse al visor.
 
 ---
 
-HITO 13 — Sistema persistente de órdenes
+# HITO 13 — Sistema persistente de órdenes
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 Objetivo:
 
@@ -3005,9 +3045,9 @@ No depender de una conexión entrante directa al mini-PC.
 
 ---
 
-HITO 14 — Publicación del directo
+# HITO 14 — Publicación del directo
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 Objetivo:
 
@@ -3031,9 +3071,9 @@ La visualización de las cámaras públicas no requerirá registro.
 
 ---
 
-HITO 15 — Selector público de vistas
+# HITO 15 — Selector público de vistas
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 Objetivo:
 
@@ -3064,9 +3104,9 @@ Nunca implementar PTZ público libre.
 
 ---
 
-HITO 16 — Capturas, almacenamiento y timelapses
+# HITO 16 — Capturas, almacenamiento y timelapses
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 Objetivos:
 
@@ -3092,9 +3132,9 @@ No comenzar hasta disponer de una instalación estable.
 
 ---
 
-HITO 17 — Episodios meteorológicos
+# HITO 17 — Episodios meteorológicos
 
-Estado: FUTURO
+**Estado: FUTURO**
 
 Objetivos:
 
@@ -3109,9 +3149,9 @@ Objetivos:
 
 ---
 
-41. Estado actual del proyecto
+## 41. Estado actual del proyecto
 
-Completado
+### Completado
 
 - creación del repositorio "MeteoCam";
 - definición del objetivo general;
@@ -3168,45 +3208,51 @@ Completado
 - definición conceptual de timelapses iniciados desde Administración;
 - posibilidad futura de seleccionar vista de origen del timelapse;
 - intervalo predeterminado de timelapse de 1 minuto;
-- previsión de cancelación, recuperación y trazabilidad de trabajos.
+- previsión de cancelación, recuperación y trazabilidad de trabajos;
+- creación de "tests/test_package.py";
+- creación del primer test automatizado;
+- comprobación de la versión pública del paquete mediante pytest;
+- incorporación de la ejecución real de pytest a GitHub Actions;
+- validación de pytest en CI;
+- mantenimiento del CI rápido, con CI #10 completado en aproximadamente
+  11 segundos;
+- finalización del Sprint 0.4;
+- finalización del HITO 0 — Fundación del repositorio.
 
-En curso
+### En curso
 
-- HITO 0 — Fundación del repositorio;
-- Sprint 1.1 parcialmente iniciado mediante la creación del paquete base.
+- HITO 1 — Primera aplicación de escritorio;
+- Sprint 1.1 — Paquete MeteoCam.
 
-Siguiente trabajo
+### Siguiente trabajo
 
-El siguiente paso continúa siendo:
+El siguiente paso es:
 
-Sprint 0.4 — Primer test
+**Sprint 1.1 — Crear el punto de entrada de MeteoCam**
 
-El cambio de cámara candidata y la generalización multivista no alteran el
-siguiente trabajo inmediato.
+El paquete base ya existe y está comprobado mediante pytest.
 
-Crear el primer test mínimo del paquete y hacer que el workflow rápido ejecute
-realmente pytest.
+El siguiente objetivo será proporcionar un punto de entrada ejecutable que
+permita comenzar a convertir el paquete en una aplicación real.
 
-Objetivos inmediatos:
+Este paso deberá mantenerse todavía pequeño y verificable.
 
-1. crear el directorio de pruebas;
-2. crear el primer test;
-3. ejecutar pytest desde GitHub Actions;
-4. mantener CI verde y rápido.
+Después de crear y validar el punto de entrada se podrá cerrar Sprint 1.1.
 
-Después de completar Sprint 0.4 se cerrará el HITO 0.
+A continuación se iniciará:
 
-A continuación se retomará:
-
-Sprint 1.1 — Paquete MeteoCam
-
-El siguiente objetivo será crear el punto de entrada de la aplicación.
-
-Posteriormente:
-
-Sprint 1.2 — Ventana principal
+**Sprint 1.2 — Ventana principal**
 
 Se comenzará la primera aplicación PySide6 ejecutable.
+
+Los primeros objetivos serán:
+
+1. iniciar `QApplication`;
+2. crear la ventana principal;
+3. mostrar el nombre MeteoCam;
+4. mostrar la versión;
+5. permitir un cierre limpio;
+6. mantener separada progresivamente la lógica de aplicación de la interfaz.
 
 La generalización de dispositivo/vistas deberá respetarse progresivamente
 durante el HITO 2, sin introducir anticipadamente complejidad que todavía no
@@ -3214,7 +3260,7 @@ sea necesaria.
 
 ---
 
-42. Reglas de desarrollo
+## 42. Reglas de desarrollo
 
 El desarrollo se realizará incrementalmente.
 
@@ -3262,7 +3308,7 @@ sin penalizar innecesariamente el ciclo normal de desarrollo archivo a archivo.
 
 ---
 
-43. Principio de detección de capacidades
+## 43. Principio de detección de capacidades
 
 MeteoCam no deberá determinar las capacidades operativas de un dispositivo
 únicamente por su fabricante y modelo.
@@ -3292,8 +3338,8 @@ Una misma familia de cámara podrá comportarse de manera diferente según:
 
 Por ello MeteoCam distinguirá conceptualmente entre:
 
-CAPACIDAD ESPERADA
-CAPACIDAD DETECTADA
+CAPACIDAD ESPERADA  
+CAPACIDAD DETECTADA  
 CAPACIDAD COMPROBADA
 
 Las funciones críticas deberán apoyarse preferentemente en capacidades
@@ -3324,7 +3370,7 @@ Esta filosofía será especialmente útil durante la primera instalación real.
 
 ---
 
-44. Principio multivista
+## 44. Principio multivista
 
 La arquitectura de MeteoCam deberá tratar como conceptos diferentes:
 
@@ -3387,7 +3433,7 @@ Se incorporarán cuando la hoja de ruta llegue al dominio correspondiente.
 
 ---
 
-45. Principio rector
+## 45. Principio rector
 
 MeteoCam debe crecer por necesidades reales y comprobadas.
 
