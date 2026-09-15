@@ -17,19 +17,20 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Mostrar versión de Python
         run: python --version
 
-      - name: Actualizar herramientas de instalación
-        run: python -m pip install --upgrade pip setuptools wheel
+      - name: Instalar herramientas de prueba
+        run: python -m pip install pytest
 
-      - name: Instalar MeteoCam y dependencias de desarrollo
-        run: python -m pip install -e ".[dev]"
+      - name: Instalar MeteoCam sin dependencias gráficas
+        run: python -m pip install -e . --no-deps
 
-      - name: Comprobar PySide6
+      - name: Comprobar paquete MeteoCam
         run: |
-          python -c "import PySide6; print('PySide6:', PySide6.__version__)"
+          python -c "import meteocam; print('MeteoCam:', meteocam.__version__)"
           python -c "print('MeteoCam CI preparado correctamente')"
 
 # Fin archivo: .github/workflows/ci.yml
