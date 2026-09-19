@@ -1,7 +1,9 @@
 """Ventana principal de MeteoCam."""
 
+from pathlib import Path
+
 from PySide6.QtCore import QPoint, QRect, Qt
-from PySide6.QtGui import QMouseEvent
+from PySide6.QtGui import QMouseEvent, QPixmap
 from PySide6.QtWidgets import (
     QFrame,
     QGroupBox,
@@ -34,11 +36,35 @@ class TitleBarWin31(QFrame):
         layout.setContentsMargins(3, 3, 3, 3)
         layout.setSpacing(3)
 
-        self._system_button = QPushButton("−")
+        self._system_button = QPushButton()
         self._system_button.setObjectName("win31SystemButton")
         self._system_button.setFixedSize(22, 22)
         self._system_button.setToolTip("Menú de control")
         self._system_button.clicked.connect(self._mostrar_menu_control)
+
+        icon_label = QLabel(self._system_button)
+        icon_label.setObjectName("win31ApplicationIcon")
+        icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon_label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents)
+        icon_label.setGeometry(2, 2, 18, 18)
+
+        icon_path = (
+            Path(__file__).resolve().parent
+            / "themes"
+            / "icono-192.png"
+        )
+
+        pixmap = QPixmap(str(icon_path))
+
+        if not pixmap.isNull():
+            icon_label.setPixmap(
+                pixmap.scaled(
+                    16,
+                    16,
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
+                )
+            )
 
         self._title_label = QLabel("MeteoCam")
         self._title_label.setObjectName("win31TitleText")
