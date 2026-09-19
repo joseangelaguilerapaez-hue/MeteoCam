@@ -1,240 +1,410 @@
-"""Tema MeteoCam Classic Claro."""
+"""Tema MeteoCam Classic Claro inspirado en Windows 3.1."""
 
 CLASSIC_LIGHT_STYLESHEET = """
+/* =========================================================
+   METEOCAM CLASSIC CLARO
+   Inspiración visual: Microsoft Windows 3.1
+   ========================================================= */
+
 QWidget {
-    background-color: #d4d0c8;
-    color: #202020;
-    font-family: "Segoe UI";
+    background-color: #c0c0c0;
+    color: #000000;
+    font-family: "MS Sans Serif", "Microsoft Sans Serif", "Segoe UI";
     font-size: 10pt;
 }
 
 QMainWindow {
-    background-color: #d4d0c8;
+    background-color: #c0c0c0;
 }
 
-/* ---------------------------------------------------------
-   Cabecera
-   --------------------------------------------------------- */
 
-QFrame {
-    background-color: #d4d0c8;
+/* =========================================================
+   SUPERFICIE PRINCIPAL
+   ========================================================= */
+
+QWidget#mainWindowSurface {
+    background-color: #c0c0c0;
+
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
 }
 
-QFrame#videoFrame {
-    background-color: #101010;
-    border-top: 2px solid #707070;
-    border-left: 2px solid #707070;
+
+/* =========================================================
+   BARRA DE TÍTULO WINDOWS 3.1
+   ========================================================= */
+
+QFrame#win31TitleBar {
+    background-color: #000080;
+
+    border-top: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+QLabel#win31TitleText {
+    background-color: #000080;
+    color: #ffffff;
+
+    font-weight: bold;
+    font-size: 11pt;
+
+    padding-left: 4px;
+}
+
+
+/* =========================================================
+   BOTONES DE LA BARRA DE TÍTULO
+   ========================================================= */
+
+QPushButton#win31SystemButton,
+QPushButton#win31CaptionButton {
+    background-color: #c0c0c0;
+    color: #000000;
+
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+
+    padding: 0px;
+    margin: 0px;
+
+    font-weight: bold;
+    font-size: 9pt;
+}
+
+QPushButton#win31SystemButton:pressed,
+QPushButton#win31CaptionButton:pressed {
+    background-color: #c0c0c0;
+
+    border-top: 2px solid #000000;
+    border-left: 2px solid #000000;
     border-right: 2px solid #ffffff;
     border-bottom: 2px solid #ffffff;
+
+    padding-top: 2px;
+    padding-left: 2px;
+}
+
+
+/* =========================================================
+   MENÚ PRINCIPAL
+   ========================================================= */
+
+QFrame#win31MenuBar {
+    background-color: #c0c0c0;
+    border: none;
+}
+
+QLabel#win31MenuItem {
+    background-color: #c0c0c0;
+    color: #000000;
+
+    padding: 2px 1px;
+}
+
+QLabel#win31MenuItem:hover {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   BARRA DE HERRAMIENTAS
+   ========================================================= */
+
+QFrame#win31ToolBar {
+    background-color: #c0c0c0;
+
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #808080;
+}
+
+QFrame#win31ToolSeparator {
+    color: #808080;
+    background-color: #c0c0c0;
+}
+
+QLabel#toolbarVersion {
+    background-color: #c0c0c0;
+    color: #000000;
+
+    padding-right: 4px;
+}
+
+
+/* =========================================================
+   CABECERAS Y CAMPOS
+   ========================================================= */
+
+QFrame {
+    background-color: #c0c0c0;
 }
 
 QLabel#applicationTitle {
-    font-size: 18pt;
     font-weight: bold;
-    color: #101010;
+    color: #000000;
 }
 
 QLabel#fieldTitle {
-    font-size: 8pt;
-    font-weight: bold;
-    color: #505050;
+    color: #000000;
 }
 
 QLabel#fieldValue {
-    font-size: 10pt;
-    font-weight: bold;
-    color: #101010;
+    color: #000000;
 }
 
-QLabel#videoPlaceholder {
-    background-color: #101010;
-    color: #b8b8b8;
-    font-size: 11pt;
-}
 
-/* ---------------------------------------------------------
-   GroupBox clásico
-   --------------------------------------------------------- */
+/* =========================================================
+   GROUPBOX WINDOWS 3.1
+   ========================================================= */
 
 QGroupBox {
-    background-color: #d4d0c8;
-    border-top: 2px solid #ffffff;
-    border-left: 2px solid #ffffff;
-    border-right: 2px solid #707070;
-    border-bottom: 2px solid #707070;
-    margin-top: 12px;
-    padding-top: 10px;
-    font-weight: bold;
+    background-color: #c0c0c0;
+    color: #000000;
+
+    border-top: 1px solid #808080;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+
+    margin-top: 8px;
+    padding-top: 7px;
 }
 
 QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top left;
-    left: 10px;
-    padding: 0 5px;
-    background-color: #d4d0c8;
-    color: #202020;
+
+    left: 8px;
+    padding: 0px 4px;
+
+    background-color: #c0c0c0;
+    color: #000000;
 }
 
-/* ---------------------------------------------------------
-   Botones clásicos tridimensionales
-   --------------------------------------------------------- */
+
+/* =========================================================
+   VISOR DE VÍDEO HUNDIDO
+   ========================================================= */
+
+QFrame#videoFrame {
+    background-color: #000000;
+
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+}
+
+QLabel#videoPlaceholder {
+    background-color: #000000;
+    color: #c0c0c0;
+}
+
+
+/* =========================================================
+   BOTONES WINDOWS 3.1
+   ========================================================= */
 
 QPushButton {
-    background-color: #d4d0c8;
-    color: #202020;
+    background-color: #c0c0c0;
+    color: #000000;
 
     border-top: 2px solid #ffffff;
     border-left: 2px solid #ffffff;
-    border-right: 2px solid #606060;
-    border-bottom: 2px solid #606060;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
 
-    padding: 6px 16px;
-    min-height: 24px;
+    padding: 4px 12px;
+    min-height: 20px;
 }
 
 QPushButton:hover {
-    background-color: #dedbd5;
+    background-color: #c0c0c0;
+}
+
+QPushButton:focus {
+    outline: 1px dotted #000000;
 }
 
 QPushButton:pressed {
-    background-color: #c4c0b8;
+    background-color: #c0c0c0;
 
-    border-top: 2px solid #606060;
-    border-left: 2px solid #606060;
+    border-top: 2px solid #000000;
+    border-left: 2px solid #000000;
     border-right: 2px solid #ffffff;
     border-bottom: 2px solid #ffffff;
 
-    padding-top: 8px;
-    padding-left: 18px;
-    padding-right: 14px;
-    padding-bottom: 4px;
+    padding-top: 6px;
+    padding-left: 14px;
+    padding-right: 10px;
+    padding-bottom: 2px;
 }
 
 QPushButton:disabled {
+    background-color: #c0c0c0;
     color: #808080;
-    background-color: #c8c5be;
-}
-
-/* ---------------------------------------------------------
-   Barra de estado
-   --------------------------------------------------------- */
-
-QStatusBar {
-    background-color: #d4d0c8;
-    color: #202020;
-
-    border-top: 2px solid #707070;
-}
-
-QStatusBar::item {
-    border: none;
-}
-
-/* ---------------------------------------------------------
-   Menús preparados para fases posteriores
-   --------------------------------------------------------- */
-
-QMenuBar {
-    background-color: #d4d0c8;
-    color: #202020;
-}
-
-QMenuBar::item {
-    background-color: transparent;
-    padding: 4px 8px;
-}
-
-QMenuBar::item:selected {
-    background-color: #0a64ad;
-    color: #ffffff;
-}
-
-QMenu {
-    background-color: #d4d0c8;
-    color: #202020;
 
     border-top: 2px solid #ffffff;
     border-left: 2px solid #ffffff;
-    border-right: 2px solid #606060;
-    border-bottom: 2px solid #606060;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
 }
 
-QMenu::item {
-    padding: 5px 28px 5px 24px;
-}
 
-QMenu::item:selected {
-    background-color: #0a64ad;
-    color: #ffffff;
-}
-
-/* ---------------------------------------------------------
-   Controles preparados para configuración futura
-   --------------------------------------------------------- */
+/* =========================================================
+   CAMPOS DE ENTRADA
+   ========================================================= */
 
 QLineEdit,
 QComboBox,
 QSpinBox {
     background-color: #ffffff;
-    color: #101010;
+    color: #000000;
 
-    border-top: 2px solid #707070;
-    border-left: 2px solid #707070;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
     border-right: 2px solid #ffffff;
     border-bottom: 2px solid #ffffff;
 
-    padding: 4px;
+    padding: 2px;
 }
 
 QLineEdit:focus,
 QComboBox:focus,
 QSpinBox:focus {
-    border: 2px solid #0a64ad;
+    border-top: 2px solid #000000;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
 }
 
 QComboBox QAbstractItemView {
     background-color: #ffffff;
-    color: #101010;
-    selection-background-color: #0a64ad;
+    color: #000000;
+
+    selection-background-color: #000080;
     selection-color: #ffffff;
 }
 
-/* ---------------------------------------------------------
-   Scrollbars clásicas
-   --------------------------------------------------------- */
+
+/* =========================================================
+   MENÚS EMERGENTES
+   ========================================================= */
+
+QMenu {
+    background-color: #c0c0c0;
+    color: #000000;
+
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+}
+
+QMenu::item {
+    padding: 4px 24px 4px 20px;
+}
+
+QMenu::item:selected {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   BARRA DE ESTADO
+   ========================================================= */
+
+QStatusBar#win31StatusBar {
+    background-color: #c0c0c0;
+    color: #000000;
+
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+
+    min-height: 20px;
+}
+
+QStatusBar#win31StatusBar::item {
+    border: none;
+}
+
+
+/* =========================================================
+   SCROLLBARS CLÁSICAS
+   ========================================================= */
 
 QScrollBar:vertical {
-    background-color: #d4d0c8;
-    width: 18px;
-    margin: 18px 0 18px 0;
+    background-color: #c0c0c0;
+    width: 16px;
+    margin: 16px 0px 16px 0px;
 }
 
 QScrollBar::handle:vertical {
     background-color: #c0c0c0;
-    min-height: 24px;
+    min-height: 20px;
 
     border-top: 2px solid #ffffff;
     border-left: 2px solid #ffffff;
-    border-right: 2px solid #606060;
-    border-bottom: 2px solid #606060;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
 }
 
 QScrollBar::add-line:vertical,
 QScrollBar::sub-line:vertical {
-    background-color: #d4d0c8;
-    height: 18px;
+    background-color: #c0c0c0;
+    height: 16px;
 
-    border-top: 1px solid #ffffff;
-    border-left: 1px solid #ffffff;
-    border-right: 1px solid #606060;
-    border-bottom: 1px solid #606060;
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
 }
 
+QScrollBar:horizontal {
+    background-color: #c0c0c0;
+    height: 16px;
+    margin: 0px 16px 0px 16px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #c0c0c0;
+    min-width: 20px;
+
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    background-color: #c0c0c0;
+    width: 16px;
+
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+}
+
+
+/* =========================================================
+   TOOLTIPS
+   ========================================================= */
+
 QToolTip {
-    background-color: #ffffdc;
-    color: #101010;
-    border: 1px solid #202020;
+    background-color: #ffffe1;
+    color: #000000;
+    border: 1px solid #000000;
 }
 """
 

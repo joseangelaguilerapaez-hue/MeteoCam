@@ -5,6 +5,7 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 from meteocam.main_window import MainWindow
+from meteocam.themes.classic_light import CLASSIC_LIGHT_STYLESHEET
 
 
 def main() -> int:
@@ -13,6 +14,9 @@ def main() -> int:
 
     app.setApplicationName("MeteoCam")
     app.setOrganizationName("MeteoArchidona")
+
+    # Aplicar el tema visual clásico de MeteoCam a toda la aplicación.
+    app.setStyleSheet(CLASSIC_LIGHT_STYLESHEET)
 
     window = MainWindow()
     window.show()
