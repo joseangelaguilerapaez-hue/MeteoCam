@@ -17,6 +17,9 @@ from PySide6.QtWidgets import (
 )
 
 from meteocam import __version__
+from meteocam.cameras.diagnostics import CameraTarget, Credentials
+from meteocam.cameras.stream_player import StreamPlayer
+from meteocam.diagnostics_dialog import DiagnosticsDialog
 
 
 class TitleBarWin31(QFrame):
@@ -204,6 +207,9 @@ class MainWindow(QMainWindow):
         self._resize_start_position = QPoint()
         self._resize_start_geometry = QRect()
 
+        self._stream_player: StreamPlayer | None = None
+        self._last_video_pixmap: QPixmap | None = None
+
         self.setMouseTracking(True)
 
         self._crear_interfaz()
@@ -269,6 +275,7 @@ class MainWindow(QMainWindow):
 
         configuration_button = QPushButton("Configuración...")
         diagnostics_button = QPushButton("Diagnóstico...")
+        diagnostics_button.clicked.connect(self._abrir_diagnostico)
 
         for button in (
             buscar_button,
@@ -300,6 +307,105 @@ class MainWindow(QMainWindow):
         layout.addWidget(version_label)
 
         return frame
+
+    def _abrir_diagnostico(self) -> None:
+        """Abrir el diagnóstico independiente de cámaras IP."""
+        dialog = DiagnosticsDialog(self)
+        dialog.stream_ready.connect(self._iniciar_video)
+
+        try:
+            dialog.exec()
+        finally:
+            dialog.deleteLater()
+
+    def _iniciar_video(
+        self,
+        target: CameraTarget,
+        path: str,
+        credentials: Credentials,
+    ) -> None:
+        """Abrir la ruta validada en el panel de vídeo."""
+        self._detener_video()
+
+        self._video_label.setText(
+            "CONECTANDO CON LA CÁMARA...\n\n"
+            "Esperando el primer fotograma."
+        )
+        self.statusBar().showMessage(" Abriendo vídeo RTSP...")
+
+        player = StreamPlayer(
+            target=target,
+            path=path,
+            credentials=credentials,
+            parent=self,
+        )
+
+        player.frame_received.connect(self._mostrar_fotograma)
+        player.status_changed.connect(self._mostrar_estado_video)
+        player.finished.connect(
+            lambda: self._video_finalizado(player)
+        )
+
+        self._stream_player = player
+        player.start()
+
+    def _detener_video(self) -> None:
+        """Detener de forma segura un reproductor que siga activo."""
+        player = self._stream_player
+
+        if player is None:
+            return
+
+        player.stop()
+        player.wait(3000)
+        self._stream_player = None
+        player.deleteLater()
+
+    def _mostrar_fotograma(self, image) -> None:
+        """Escalar y mostrar el último fotograma recibido."""
+        pixmap = QPixmap.fromImage(image)
+
+        if pixmap.isNull():
+            return
+
+        self._last_video_pixmap = pixmap
+        self._actualizar_imagen_video()
+
+    def _actualizar_imagen_video(self) -> None:
+        """Ajustar el fotograma actual al tamaño del panel."""
+        if self._last_video_pixmap is None:
+            return
+
+        size = self._video_label.size()
+
+        if size.width() < 1 or size.height() < 1:
+            return
+
+        self._video_label.setPixmap(
+            self._last_video_pixmap.scaled(
+                size,
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation,
+            )
+        )
+
+    def _mostrar_estado_video(self, code: str, message: str) -> None:
+        """Reflejar las trazas de vídeo sin exponer detalles sensibles."""
+        self.statusBar().showMessage(f" {code}  {message}")
+
+        if code == "CAM-STREAM-500":
+            self._last_video_pixmap = None
+            self._video_label.setText(
+                "NO SE HA PODIDO ABRIR EL VÍDEO\n\n"
+                "Consulta el diagnóstico de la cámara."
+            )
+
+    def _video_finalizado(self, player: StreamPlayer) -> None:
+        """Liberar un reproductor al finalizar."""
+        if self._stream_player is player:
+            self._stream_player = None
+
+        player.deleteLater()
 
     def _crear_panel_informacion(self) -> QGroupBox:
         """Crear el panel con la información de la cámara seleccionada."""
@@ -348,30 +454,31 @@ class MainWindow(QMainWindow):
         return widget
 
     def _crear_panel_video(self) -> QGroupBox:
-        """Crear la zona reservada para el futuro visor de vídeo."""
+        """Crear la zona reservada para el visor de vídeo."""
         group = QGroupBox("Vídeo en directo")
 
         layout = QVBoxLayout(group)
         layout.setContentsMargins(10, 8, 10, 10)
 
-        video_frame = QFrame(group)
-        video_frame.setObjectName("videoFrame")
-        video_frame.setFrameShape(QFrame.Shape.Panel)
-        video_frame.setFrameShadow(QFrame.Shadow.Sunken)
-        video_frame.setMinimumHeight(360)
+        self._video_frame = QFrame(group)
+        self._video_frame.setObjectName("videoFrame")
+        self._video_frame.setFrameShape(QFrame.Shape.Panel)
+        self._video_frame.setFrameShadow(QFrame.Shadow.Sunken)
+        self._video_frame.setMinimumHeight(360)
 
-        video_layout = QVBoxLayout(video_frame)
+        video_layout = QVBoxLayout(self._video_frame)
         video_layout.setContentsMargins(2, 2, 2, 2)
 
-        video_label = QLabel(
+        self._video_label = QLabel(
             "SIN SEÑAL DE VÍDEO\n\n"
             "No hay ninguna cámara conectada."
         )
-        video_label.setObjectName("videoPlaceholder")
-        video_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._video_label.setObjectName("videoPlaceholder")
+        self._video_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._video_label.setMinimumSize(1, 1)
 
-        video_layout.addWidget(video_label)
-        layout.addWidget(video_frame)
+        video_layout.addWidget(self._video_label)
+        layout.addWidget(self._video_frame)
 
         return group
 
@@ -546,6 +653,16 @@ class MainWindow(QMainWindow):
 
         super().mouseReleaseEvent(event)
 
+    def resizeEvent(self, event) -> None:
+        """Mantener la proporción del vídeo al redimensionar la ventana."""
+        self._actualizar_imagen_video()
+        super().resizeEvent(event)
+
+    def closeEvent(self, event) -> None:
+        """Cerrar el receptor RTSP antes de destruir la ventana."""
+        self._detener_video()
+        super().closeEvent(event)
+
     def leaveEvent(self, event) -> None:
         """Restaurar el cursor al abandonar la ventana."""
         if self._resize_edges == self.EDGE_NONE:
@@ -554,5 +671,4 @@ class MainWindow(QMainWindow):
         super().leaveEvent(event)
 
 
-# Fin de fichero
 # Fin archivo: src/meteocam/main_window.py

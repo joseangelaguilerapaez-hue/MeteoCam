@@ -10,6 +10,7 @@ description = "Agente de escritorio para gestión, monitorización, diagnóstico
 requires-python = ">=3.11"
 dependencies = [
     "PySide6>=6.7,<7",
+    "av>=18,<19",
 ]
 
 
