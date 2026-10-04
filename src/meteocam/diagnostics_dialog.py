@@ -14,6 +14,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from meteocam.cameras.config import CameraConfig
 from meteocam.cameras.diagnostics import (
     CameraTarget,
     Credentials,
@@ -66,7 +67,11 @@ class DiagnosticsDialog(QDialog):
 
     stream_ready = Signal(object, str, object)
 
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(
+        self,
+        parent: QWidget | None = None,
+        camera: CameraConfig | None = None,
+    ) -> None:
         """Crear el diálogo de diagnóstico."""
         super().__init__(parent)
 
@@ -74,6 +79,7 @@ class DiagnosticsDialog(QDialog):
         self.resize(720, 520)
         self.setMinimumSize(560, 420)
 
+        self._camera = camera
         self._worker: DiagnosticWorker | None = None
         self._validated_target: CameraTarget | None = None
         self._validated_path: str | None = None
@@ -88,14 +94,34 @@ class DiagnosticsDialog(QDialog):
         explanation.setWordWrap(True)
         layout.addWidget(explanation)
 
+        if self._camera is not None:
+            camera_label = QLabel(
+                f"Cámara seleccionada: {self._camera.name} — "
+                f"{self._camera.manufacturer} {self._camera.model}"
+            )
+            camera_label.setWordWrap(True)
+            layout.addWidget(camera_label)
+
         self._fields = QWidget(self)
         form = QFormLayout(self._fields)
 
-        self._host = QLineEdit("192.168.178.61")
+        default_host = (
+            self._camera.host
+            if self._camera is not None
+            else "192.168.178.61"
+        )
+
+        default_port = (
+            self._camera.rtsp_port
+            if self._camera is not None
+            else 554
+        )
+
+        self._host = QLineEdit(default_host)
 
         self._port = QSpinBox()
         self._port.setRange(1, 65535)
-        self._port.setValue(554)
+        self._port.setValue(default_port)
 
         self._paths = QLineEdit("/11, /1, /12")
         self._paths.setToolTip(
