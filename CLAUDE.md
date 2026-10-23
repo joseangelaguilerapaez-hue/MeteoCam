@@ -19,6 +19,16 @@ Python ≥ 3.11 · PySide6 (interfaz Qt) · PyAV (`av`) para vídeo · pytest. P
 - `src/meteocam/diagnostics_dialog.py`: diálogo de diagnóstico. `themes/`: temas visuales.
 - `tests/`: pytest. `docs/arquitectura.md` (≈3.500 líneas): arquitectura y hoja de ruta; lee solo la sección que toque.
 
+## Estado del proyecto
+
+**Al empezar una sesión, lee `docs/estado.md`**: qué está hecho, qué está en construcción y qué
+queda pendiente. Es la fuente de verdad de "por dónde vamos".
+
+**Al terminar cada tarea, actualiza `docs/estado.md` en el mismo PR**: mueve lo que corresponda
+entre Hecho, En construcción y Pendiente, y añade una línea fechada al Registro. No marques como
+hecho nada que no esté en `main`. Si dudas del estado real de algo, déjalo "por confirmar" y
+pregúntaselo a José en vez de suponerlo.
+
 ## Principios de diseño que no deben romperse
 
 - Se distingue entre **estación**, **dispositivo físico de cámara**, **vista o canal lógico** y **stream de vídeo**. Una cámara física no equivale necesariamente a una sola vista (p. ej. la Reolink OMVI 3i PoE tiene varios subsistemas ópticos).
