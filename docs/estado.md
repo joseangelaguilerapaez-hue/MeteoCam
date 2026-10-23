@@ -24,7 +24,6 @@ No se marca nada como hecho que no esté en `main`.
 ## En construcción
 
 - Rama `feature/streaming-web` (2 commits por delante de `main`, 3 y 4 oct, sin PR): configuración multicámara y multivista, y desarrollo de streaming y publicación. **(por confirmar el estado real y si está lista para PR)**.
-- PR #1 · este `CLAUDE.md` y `docs/estado.md`.
 
 ## Pendiente
 
@@ -35,4 +34,4 @@ No se marca nada como hecho que no esté en `main`.
 
 ## Registro
 
-- 2026-10-23 · Creados `CLAUDE.md` y este documento; estado reconstruido desde Git.
+- 2026-10-23 · Creados `CLAUDE.md` y este documento (PR #1); estado reconstruido desde Git.
