@@ -1,0 +1,104 @@
+name: Instalador Windows
+
+# Fabrica MeteoCam-Setup.exe (servicio MeteoCam Publisher) en un Windows de
+# GitHub, lo instala y desinstala de prueba, y lo deja como artefacto para
+# descargarlo desde la pestaña Actions. No usa ni contiene credenciales: la
+# prueba emplea un publisher.json ficticio con una cámara inexistente.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "src/**"
+      - "installer/**"
+      - "pyproject.toml"
+      - ".github/workflows/instalador.yml"
+
+jobs:
+  instalador:
+    name: Construir y probar MeteoCam-Setup.exe
+    runs-on: windows-latest
+
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar MeteoCam y PyInstaller
+        run: python -m pip install . pyinstaller
+
+      - name: Empaquetar MeteoCamPublisher.exe
+        run: >
+          pyinstaller --noconfirm --clean --onedir --console
+          --name MeteoCamPublisher
+          --hidden-import win32timezone
+          installer/meteocam_publisher.py
+
+      - name: Leer versión
+        id: version
+        shell: pwsh
+        run: |
+          $v = python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])"
+          "valor=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Instalar Inno Setup
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup -y --no-progress
+          }
+
+      - name: Compilar MeteoCam-Setup.exe
+        shell: pwsh
+        run: |
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" "/DAppVersion=${{ steps.version.outputs.valor }}" installer\MeteoCam-Setup.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Probar instalación del servicio
+        shell: pwsh
+        run: |
+          $prueba = Join-Path $env:RUNNER_TEMP "prueba-setup"
+          New-Item -ItemType Directory -Force $prueba | Out-Null
+          Copy-Item dist-installer\MeteoCam-Setup.exe $prueba
+          # Cámara inexistente: el servicio debe arrancar y quedarse reintentando.
+          '{"camera_host": "127.0.0.1", "camera_username": "prueba", "camera_password": "prueba", "vps_host": "127.0.0.1", "rtsp_port": 1}' |
+            Set-Content -Encoding utf8 (Join-Path $prueba "publisher.json")
+
+          $p = Start-Process (Join-Path $prueba "MeteoCam-Setup.exe") -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/LOG=$prueba\setup.log" -Wait -PassThru
+          Get-Content "$prueba\setup.log" | Select-String "OK:|Aviso:"
+          if ($p.ExitCode -ne 0) { throw "El instalador terminó con código $($p.ExitCode)" }
+
+          Start-Sleep -Seconds 20
+          $svc = Get-Service MeteoCamPublisher
+          $svc | Format-List Name, DisplayName, Status, StartType
+          Write-Host "--- registro del servicio"
+          Get-Content C:\ProgramData\MeteoCam\logs\publisher.log -Tail 30
+          Write-Host "--- configuración de recuperación"
+          sc.exe qfailure MeteoCamPublisher
+          if ($svc.Status -ne "Running") { throw "El servicio no está en marcha" }
+          if ($svc.StartType -ne "Automatic") { throw "El servicio no arranca automáticamente" }
+          if (-not (Select-String -Quiet -Path C:\ProgramData\MeteoCam\logs\publisher.log -Pattern "Iniciando MeteoCam Publisher")) {
+            throw "El motor de publicación no llegó a arrancar"
+          }
+
+      - name: Probar desinstalación
+        shell: pwsh
+        run: |
+          $desinstalador = Get-ChildItem "$env:ProgramFiles\MeteoCam\Publisher\unins*.exe" | Select-Object -First 1
+          $p = Start-Process $desinstalador.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART" -Wait -PassThru
+          Start-Sleep -Seconds 5
+          if (Get-Service MeteoCamPublisher -ErrorAction SilentlyContinue) { throw "El servicio sigue instalado" }
+          Write-Host "Desinstalación correcta."
+
+      - name: Publicar MeteoCam-Setup.exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: MeteoCam-Setup
+          path: dist-installer/MeteoCam-Setup.exe
+          if-no-files-found: error
+
+# Fin archivo: .github/workflows/instalador.yml

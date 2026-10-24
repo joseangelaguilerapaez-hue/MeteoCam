@@ -11,6 +11,7 @@ requires-python = ">=3.11"
 dependencies = [
     "PySide6>=6.7,<7",
     "av>=18,<19",
+    "pywin32>=306; sys_platform == 'win32'",
 ]
 
 
@@ -18,6 +19,10 @@ dependencies = [
 dev = [
     "pytest>=8,<9",
 ]
+
+
+[project.scripts]
+meteocam-publisher-service = "meteocam.cameras.windows_service:main"
 
 
 [tool.setuptools]
