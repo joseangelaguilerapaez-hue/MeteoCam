@@ -36,4 +36,18 @@ jobs:
           python -c "import meteocam; print('MeteoCam:', meteocam.__version__)"
           python -c "print('MeteoCam CI preparado correctamente')"
 
+      - name: Probar script de investigación Reolink contra una cámara falsa
+        shell: bash
+        run: |
+          python tests/servidor_reolink_falso.py 8099 &
+          sleep 2
+          mkdir -p "$RUNNER_TEMP/inv"
+          printf '{"camera_host":"127.0.0.1:8099","camera_username":"admin","camera_password":"clave-secreta","vps_host":"x"}' > "$RUNNER_TEMP/publisher.json"
+          pwsh -NoProfile -File scripts/investigar-reolink.ps1 -Config "$RUNNER_TEMP/publisher.json" -Salida "$RUNNER_TEMP/inv"
+          resultado=$(ls "$RUNNER_TEMP"/inv/reolink-*.json)
+          grep -q '"GetDevInfo"' "$resultado"
+          grep -q 'GetPtzPreset (canal 1)' "$resultado"
+          if grep -q 'clave-secreta\|token-de-prueba' "$resultado"; then echo "Secretos sin ocultar"; exit 1; fi
+          echo "Script de investigación correcto"
+
 # Fin archivo: .github/workflows/ci.yml
