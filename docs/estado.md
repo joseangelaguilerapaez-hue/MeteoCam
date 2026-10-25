@@ -1,6 +1,6 @@
 # Estado del proyecto — MeteoCam
 
-Última actualización: 2026-10-23.
+Última actualización: 2026-10-25.
 Origen: reconstruido a partir del historial de Git, ramas y pull requests. Lo marcado
 **(por confirmar)** necesita que José lo ratifique o corrija.
 
@@ -27,6 +27,9 @@ No se marca nada como hecho que no esté en `main`.
 
 ## Pendiente
 
+- Investigar la OMVI con `scripts/investigar-reolink.ps1` en el mini PC de Los Llanos y rellenar la columna *Estado* de `docs/catalogo-comandos-reolink.md`.
+- Decidir qué órdenes nuevas se añaden a `comando_camara` (propuestas en la sección 5 del catálogo).
+
 - Instalación piloto en la estación Los Llanos (Villanueva del Trabuco) en un mini-PC dentro de la red de las cámaras.
 - Decisión definitiva de hardware: Reolink OMVI 3i PoE (candidata preferente) frente a Reolink TrackMix PoE; debe confirmarse con pruebas reales.
 - Comunicación con la API central sin exponer cámaras ni credenciales a Internet (fase posterior, según `docs/arquitectura.md`).
@@ -35,3 +38,4 @@ No se marca nada como hecho que no esté en `main`.
 ## Registro
 
 - 2026-10-23 · Creados `CLAUDE.md` y este documento (PR #1); estado reconstruido desde Git.
+- 2026-10-25 · Catálogo de comandos de la API Reolink (`docs/catalogo-comandos-reolink.md`) y script de investigación de solo lectura, probado en CI contra una cámara falsa.
