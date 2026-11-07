@@ -100,6 +100,8 @@ jobs:
           & "$env:ProgramFiles\MeteoCam\Publisher\MeteoCamPublisher.exe" comprobar-agente
           Write-Host "Código de salida: $LASTEXITCODE"
           if ($LASTEXITCODE -ne 1) { throw "comprobar-agente debía terminar con código 1" }
+          # El 1 era el esperado: que no cuente como fallo del paso.
+          $global:LASTEXITCODE = 0
 
       - name: Probar desinstalación
         shell: pwsh
