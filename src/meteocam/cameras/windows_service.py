@@ -147,6 +147,12 @@ def main() -> None:
     administrador de servicios. Con argumentos (install, start, stop,
     remove...) se comporta como la línea de comandos habitual de pywin32.
     """
+    if len(sys.argv) > 1 and sys.argv[1] == "comprobar-agente":
+        # Comprobación desde consola: cámara, presets y API (no mueve nada).
+        from meteocam.agente.diagnostico import comprobar
+
+        sys.exit(comprobar())
+
     if getattr(sys, "frozen", False) and len(sys.argv) == 1:
         servicemanager.Initialize()
         servicemanager.PrepareToHostSingle(

@@ -49,6 +49,8 @@ Name: "{commonappdata}\MeteoCam\logs"
 Source: "..\dist\MeteoCamPublisher\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; publisher.json junto al instalador (por ejemplo, en el pendrive).
 Source: "{src}\publisher.json"; DestDir: "{commonappdata}\MeteoCam"; Flags: external skipifsourcedoesntexist ignoreversion
+; agente.json junto al instalador: agente de órdenes de cámara (docs/agente.md).
+Source: "{src}\agente.json"; DestDir: "{commonappdata}\MeteoCam"; Flags: external skipifsourcedoesntexist ignoreversion
 
 [UninstallRun]
 Filename: "{sys}\net.exe"; Parameters: "stop {#ServiceName}"; Flags: runhidden waituntilterminated; RunOnceId: "DetenerServicio"
@@ -57,10 +59,21 @@ Filename: "{app}\{#ServiceExe}"; Parameters: "remove"; Flags: runhidden waitunti
 [Code]
 var
   DatosPage: TInputQueryWizardPage;
+  AgentePage: TInputQueryWizardPage;
 
 function RutaConfig(): String;
 begin
   Result := ExpandConstant('{commonappdata}\MeteoCam\publisher.json');
+end;
+
+function RutaAgente(): String;
+begin
+  Result := ExpandConstant('{commonappdata}\MeteoCam\agente.json');
+end;
+
+function HayAgenteJuntoAlInstalador(): Boolean;
+begin
+  Result := FileExists(ExpandConstant('{src}\agente.json'));
 end;
 
 function HayConfigJuntoAlInstalador(): Boolean;
@@ -91,12 +104,25 @@ begin
   DatosPage.Values[0] := '192.168.1.100';
   DatosPage.Values[1] := 'admin';
   DatosPage.Values[3] := '187.124.114.42';
+
+  AgentePage := CreateInputQueryPage(DatosPage.ID,
+    'Agente de órdenes de cámara',
+    'No se ha encontrado agente.json junto al instalador.',
+    'Opcional: deja la clave vacía para no activar las patrullas y órdenes a ' +
+    'la cámara (el directo funciona igual). Se guardará solo en este equipo, en ' +
+    'C:\ProgramData\MeteoCam\agente.json.');
+  AgentePage.Add('Identificador del agente (camara.ide_agente):', False);
+  AgentePage.Add('Clave del agente (la del servidor):', True);
+  AgentePage.Add('Dirección de la API:', False);
+  AgentePage.Values[2] := 'https://meteoarchidona.com/api';
 end;
 
 function ShouldSkipPage(PageID: Integer): Boolean;
 begin
-  Result := (PageID = DatosPage.ID) and
-    (HayConfigJuntoAlInstalador() or FileExists(RutaConfig()));
+  Result := ((PageID = DatosPage.ID) and
+    (HayConfigJuntoAlInstalador() or FileExists(RutaConfig())))
+    or ((PageID = AgentePage.ID) and
+    (HayAgenteJuntoAlInstalador() or FileExists(RutaAgente())));
 end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
@@ -147,6 +173,22 @@ begin
   SaveStringsToUTF8File(RutaConfig(), Lineas, False);
 end;
 
+procedure EscribirAgenteDesdeAsistente();
+var
+  Lineas: TArrayOfString;
+begin
+  { Sin identificador o sin clave, el agente queda desactivado. }
+  if (Trim(AgentePage.Values[0]) = '') or (Trim(AgentePage.Values[1]) = '') then
+    Exit;
+  SetArrayLength(Lineas, 5);
+  Lineas[0] := '{';
+  Lineas[1] := '  "agente": ' + JsonTexto(Trim(AgentePage.Values[0])) + ',';
+  Lineas[2] := '  "clave_agente": ' + JsonTexto(Trim(AgentePage.Values[1])) + ',';
+  Lineas[3] := '  "api_url": ' + JsonTexto(Trim(AgentePage.Values[2]));
+  Lineas[4] := '}';
+  SaveStringsToUTF8File(RutaAgente(), Lineas, False);
+end;
+
 procedure Ejecutar(const Programa, Parametros, Descripcion: String);
 var
   Codigo: Integer;
@@ -173,6 +215,14 @@ begin
   Ejecutar(ExpandConstant('{sys}\icacls.exe'),
     '"' + RutaConfig() + '" /inheritance:r /grant:r *S-1-5-18:F *S-1-5-32-544:F',
     'proteger publisher.json');
+
+  if not FileExists(RutaAgente()) then
+    EscribirAgenteDesdeAsistente();
+
+  if FileExists(RutaAgente()) then
+    Ejecutar(ExpandConstant('{sys}\icacls.exe'),
+      '"' + RutaAgente() + '" /inheritance:r /grant:r *S-1-5-18:F *S-1-5-32-544:F',
+      'proteger agente.json');
 
   Exe := ExpandConstant('{app}\{#ServiceExe}');
   Sc := ExpandConstant('{sys}\sc.exe');
