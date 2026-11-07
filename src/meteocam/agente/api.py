@@ -16,12 +16,33 @@ el registro. Solo usa la biblioteca estándar.
 from __future__ import annotations
 
 import json
+import ssl
 import urllib.error
 import urllib.parse
 import urllib.request
 
 
 CABECERA_CLAVE = "X-Clave-Agente"
+
+
+def contexto_tls() -> ssl.SSLContext:
+    """Certificados para HTTPS: los de Windows más los de certifi.
+
+    En un Windows recién instalado, el almacén de certificados raíz se
+    rellena bajo demanda (lo hace el navegador, no Python), y el .exe de
+    PyInstaller puede no encontrar la raíz del certificado del VPS
+    («unable to get local issuer certificate»). certifi trae su propia
+    lista de raíces, así que se añaden las dos.
+    """
+
+    contexto = ssl.create_default_context()
+    try:
+        import certifi
+
+        contexto.load_verify_locations(cafile=certifi.where())
+    except Exception:
+        pass
+    return contexto
 
 
 class ErrorApi(Exception):
@@ -51,6 +72,7 @@ class ClienteApiAgente:
         self._clave = clave
         self._agente = agente
         self._tiempo_espera = tiempo_espera
+        self._contexto = contexto_tls() if self._url_base.startswith("https") else None
 
     @property
     def agente(self) -> str:
@@ -73,7 +95,9 @@ class ClienteApiAgente:
         peticion = urllib.request.Request(url, data=datos, method=metodo, headers=cabeceras)
 
         try:
-            with urllib.request.urlopen(peticion, timeout=self._tiempo_espera) as respuesta:
+            with urllib.request.urlopen(
+                peticion, timeout=self._tiempo_espera, context=self._contexto
+            ) as respuesta:
                 texto = respuesta.read().decode("utf-8")
         except urllib.error.HTTPError as error:
             detalle = ""
