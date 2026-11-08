@@ -306,7 +306,17 @@ def ejecutar_publicacion(
 
     runtime.iniciar()
 
-    return app.exec()
+    # Agente de órdenes de cámara (patrullas, presets): independiente del
+    # directo. Si no está configurado o falla, la publicación sigue igual.
+    from meteocam.agente import arrancar_desde_publisher
+
+    agente = arrancar_desde_publisher(config)
+
+    try:
+        return app.exec()
+    finally:
+        if agente is not None:
+            agente.detener()
 
 
 # Fin de fichero

@@ -29,13 +29,17 @@ jobs:
           python-version: "3.12"
 
       - name: Instalar MeteoCam y PyInstaller
-        run: python -m pip install . pyinstaller
+        run: python -m pip install . pyinstaller pytest
+
+      - name: Pruebas del agente de órdenes
+        run: python -m pytest tests/test_agente.py -q
 
       - name: Empaquetar MeteoCamPublisher.exe
         run: >
           pyinstaller --noconfirm --clean --onedir --console
           --name MeteoCamPublisher
           --hidden-import win32timezone
+          --collect-submodules meteocam.agente
           installer/meteocam_publisher.py
 
       - name: Leer versión
@@ -84,6 +88,20 @@ jobs:
           if (-not (Select-String -Quiet -Path C:\ProgramData\MeteoCam\logs\publisher.log -Pattern "Iniciando MeteoCam Publisher")) {
             throw "El motor de publicación no llegó a arrancar"
           }
+          # Sin agente.json el agente no arranca, pero lo dice en el registro.
+          if (-not (Select-String -Quiet -Path C:\ProgramData\MeteoCam\logs\publisher.log -Pattern "Agente de órdenes de cámara desactivado")) {
+            throw "El agente de órdenes no dejó constancia en el registro"
+          }
+
+      - name: Probar la comprobación del agente desde consola
+        shell: pwsh
+        run: |
+          # Sin agente.json debe explicar el problema y terminar con código 1.
+          & "$env:ProgramFiles\MeteoCam\Publisher\MeteoCamPublisher.exe" comprobar-agente
+          Write-Host "Código de salida: $LASTEXITCODE"
+          if ($LASTEXITCODE -ne 1) { throw "comprobar-agente debía terminar con código 1" }
+          # El 1 era el esperado: que no cuente como fallo del paso.
+          $global:LASTEXITCODE = 0
 
       - name: Probar desinstalación
         shell: pwsh

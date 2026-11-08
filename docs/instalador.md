@@ -12,6 +12,7 @@ relanza si se cae.
 | --- | --- |
 | `src/meteocam/cameras/publisher_runtime.py` | Motor sin ventana: lee la configuración y mantiene las dos publicaciones (`TcpPublisher`), con reconexión. |
 | `src/meteocam/cameras/windows_service.py` | Servicio de Windows (pywin32). Si el motor se cae, sale con error para que Windows lo reinicie. |
+| `src/meteocam/agente/` | Agente de órdenes de cámara: patrullas, presets y órdenes de la API (ver `docs/agente.md`). Arranca con el servicio si hay `agente.json`. |
 | `installer/meteocam_publisher.py` | Punto de entrada para PyInstaller → `MeteoCamPublisher.exe`. |
 | `installer/MeteoCam-Setup.iss` | Instalador Inno Setup → `MeteoCam-Setup.exe`. |
 | `.github/workflows/instalador.yml` | Construye el instalador en Windows, lo instala y desinstala de prueba y lo publica como artefacto. |
@@ -77,3 +78,11 @@ registros se quedan en `C:\ProgramData\MeteoCam`).
 
 - Energía: no suspender nunca y no apagar los adaptadores de red.
 - BIOS/UEFI: encender al volver la corriente («Restore on AC power loss» → Power On).
+
+## Agente de órdenes de cámara
+
+Desde la versión con agente, el servicio también mueve la PTZ según la API (patrullas, presets,
+órdenes). Para activarlo, poner **`agente.json` junto a `MeteoCam-Setup.exe`** en el pendrive (o
+rellenar la página «Agente de órdenes de cámara» del asistente) y, tras instalar, comprobar con
+`MeteoCamPublisher.exe comprobar-agente`. Detalles en `docs/agente.md`.
+
