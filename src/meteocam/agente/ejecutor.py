@@ -121,6 +121,12 @@ class EjecutorCamara:
     def unir(self, segundos: float) -> None:
         self._hilo.join(segundos)
 
+    @property
+    def posicion(self) -> str | None:
+        """Último preset al que se mandó la cámara (None si no se sabe)."""
+
+        return self._posicion
+
     def actualizar(self, estado: dict | None) -> None:
         with self._cerrojo:
             self._estado = estado
@@ -450,8 +456,13 @@ class AgenteCamaras:
         """Pide el trabajo y lo reparte. Devuelve los segundos hasta la siguiente."""
 
         intervalo = self._config.intervalo_consulta
+        posiciones = {
+            camara_id: ejecutor.posicion
+            for camara_id, ejecutor in self._ejecutores.items()
+            if getattr(ejecutor, "posicion", None) is not None
+        }
         try:
-            trabajo = self._api.trabajo()
+            trabajo = self._api.trabajo(posiciones)
         except ErrorApi as error:
             if self._conectado is not False:
                 logger.warning("Agente: sin respuesta de la API: %s", error)
