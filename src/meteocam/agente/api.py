@@ -78,8 +78,14 @@ class ClienteApiAgente:
     def agente(self) -> str:
         return self._agente
 
-    def _peticion(self, metodo: str, ruta: str, cuerpo: dict | None = None) -> dict:
-        consulta = urllib.parse.urlencode({"agente": self._agente})
+    def _peticion(
+        self,
+        metodo: str,
+        ruta: str,
+        cuerpo: dict | None = None,
+        extra: dict | None = None,
+    ) -> dict:
+        consulta = urllib.parse.urlencode({"agente": self._agente, **(extra or {})})
         url = f"{self._url_base}{ruta}?{consulta}"
 
         datos = None
@@ -117,8 +123,17 @@ class ClienteApiAgente:
         except ValueError as error:
             raise ErrorApi(f"respuesta no válida en {metodo} {ruta}") from error
 
-    def trabajo(self) -> dict:
-        return self._peticion("GET", "/trabajo")
+    def trabajo(self, posiciones: dict[int, str] | None = None) -> dict:
+        """posiciones: preset donde está cada cámara ({camara_id: preset})."""
+
+        extra = None
+        if posiciones:
+            extra = {
+                "posiciones": ",".join(
+                    f"{camara}:{preset}" for camara, preset in sorted(posiciones.items())
+                )
+            }
+        return self._peticion("GET", "/trabajo", extra=extra)
 
     def reclamar(self, comando_id: int) -> dict:
         return self._peticion("POST", f"/comandos/{int(comando_id)}/reclamar")

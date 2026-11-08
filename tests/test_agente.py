@@ -115,6 +115,7 @@ class ApiFalsa(Servidor):
             "comando": None,
         }
         self.reclamados: list[int] = []
+        self.posiciones: list[str] = []
         self.resultados: dict[int, dict] = {}
         self.cerrojo = threading.Lock()
         super().__init__(_ManejadorApi)
@@ -147,7 +148,10 @@ class _ManejadorApi(BaseHTTPRequestHandler):
         if not self._autorizado():
             return
         estado: ApiFalsa = self.server.estado
-        agente = parse_qs(urlparse(self.path).query)["agente"][0]
+        consulta = parse_qs(urlparse(self.path).query)
+        agente = consulta["agente"][0]
+        if "posiciones" in consulta:
+            estado.posiciones.append(consulta["posiciones"][0])
         with estado.cerrojo:
             camaras = [dict(estado.camara)] if agente == "los-llanos" else []
         self._responder(200, {
@@ -294,6 +298,7 @@ def test_configuracion_mezcla_y_exige_clave(tmp_path):
     assert config.api_url == "https://meteoarchidona.com/api"
     assert config.canal_para({"identificador_vista": "ptz"}) == 2
     assert config.canal_para({"identificador_vista": "otra", "camara_id": 9}) == 1
+    assert config.canal_para({"identificador_vista": "PANORAMICA", "tipo_vista": "PANORAMICA"}) == 0
     assert "x" not in repr(config)
 
     # La clave también puede ir en publisher.json.
@@ -422,6 +427,20 @@ def test_orden_interrumpe_la_patrulla_activa(camara, api):
         assert camara.movimientos()[:2] == [0, 3]
         # Y la patrulla se reanuda desde su preset inicial.
         assert _esperar(lambda: camara.movimientos()[2:3] == [0])
+    finally:
+        agente.detener()
+
+
+def test_informa_del_preset_donde_esta(camara, api):
+    api.poner_comando({"id": 15, "tipo": "POSICIONAR_PRESET", "preset": "3", "velocidad": None,
+                       "patrulla": None, "parametros": None,
+                       "fecha_creacion": "2026-11-08T02:00:00+01:00", "fecha_caducidad": None})
+    agente = _agente(camara, api)
+    agente.iniciar()
+    try:
+        assert _esperar(lambda: 15 in api.resultados)
+        # En la siguiente consulta, la API ya sabe que la cámara 7 está en el 3.
+        assert _esperar(lambda: "7:3" in api.posiciones)
     finally:
         agente.detener()
 

@@ -61,6 +61,9 @@ class ConfiguracionAgente:
         ):
             if clave and clave in self.canales:
                 return int(self.canales[clave])
+        # En la OMVI, el canal 0 es la panorámica (gran angular) y el 1 la PTZ.
+        if camara.get("tipo_vista") == "PANORAMICA":
+            return 0
         return self.canal_ptz
 
 

@@ -50,6 +50,10 @@ Detalles:
 - Si la API no responde, se reintenta cada 15 s (con 5 s de intervalo normal) y se anota una sola
   vez en el registro, no cada vez.
 - Tras reiniciarse no recuerda nada: pregunta y se ajusta a la API.
+- En cada consulta informa del preset al que ha mandado cada cámara (`posiciones=2:4`). La API lo
+  guarda como preset activo, la web lo enseña y el directo de la PTZ lleva su nombre abajo, centrado
+  (desde el 08-11-2026).
+- La panorámica usa el canal 0 y la PTZ el `canal_ptz` (1), salvo que `canales` diga otra cosa.
 - La sesión con la cámara (token) se renueva sola.
 
 ## Configuración: `C:\ProgramData\MeteoCam\agente.json`
@@ -66,7 +70,7 @@ La IP, el usuario y la contraseña de la cámara salen de `publisher.json`. Camp
 
 | Campo | Por defecto | Para qué |
 | --- | --- | --- |
-| `canal_ptz` | `1` | Canal Reolink de la PTZ (0 = panorámica, 1 = específica, **por confirmar** con `comprobar-agente`) |
+| `canal_ptz` | `1` | Canal Reolink de la PTZ (confirmado el 07-11-2026; la panorámica va siempre en el 0) |
 | `canales` | `{}` | Canal por vista o por id de cámara, si hiciera falta: `{"ptz": 1}` |
 | `segundos_llegada` | `5` | Espera tras cada movimiento |
 | `camera_http_port` | `80` | Puerto HTTP de la cámara |
